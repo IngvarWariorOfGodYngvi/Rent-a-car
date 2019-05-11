@@ -1,0 +1,1 @@
+package com.example.auta.domain.entities;public class CompanyEntity {}
