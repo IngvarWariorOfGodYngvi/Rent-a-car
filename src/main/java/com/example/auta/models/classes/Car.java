@@ -17,7 +17,7 @@ public class Car {
 
     private String make;
     private String model;
-    private Suspension suspention;
+    private Suspension suspension;
     private Integer yearOfProduction;
     private String color;
     private Integer mileage;
