@@ -1,1 +1,1 @@
-package com.example.auta.models;public enum Suspension {}
+package com.example.auta.models;public enum Suspension {    SUV,COUPE,SEDAN,HATCHBACK,KOMBI;}
