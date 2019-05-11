@@ -5,7 +5,7 @@ public class Employee {
 
     private String forname;
     private String lastname;
-    private Enum position;
+    private Position position;
     private Branch branch;
 
 }

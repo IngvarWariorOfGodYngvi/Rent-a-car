@@ -5,13 +5,13 @@ import java.time.LocalDate;
 
 public class Reservation {
 
-    LocalDate raservationDate;
-    Customer customer;
-    Car car;
-    LocalDate rentalStartDate;
-    LocalDate rentalEndDate;
-    Branch rentalBranch;
-    Branch returnBranch;
-    BigDecimal totalPrice;
+    private LocalDate raservationDate;
+    private Customer customer;
+    private Car car;
+    private LocalDate rentalStartDate;
+    private LocalDate rentalEndDate;
+    private Branch rentalBranch;
+    private Branch returnBranch;
+    private BigDecimal totalPrice;
 
 }
