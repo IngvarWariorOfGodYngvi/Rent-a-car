@@ -18,31 +18,31 @@ public class CompanyController {
     private CompanyService companyService;
 
     //add Company
-    @PostMapping("/addcompany")
-    public String addBranch(@RequestBody Company company) {
-        return null;
+    @PostMapping("/add")
+    public UUID addCompany(@RequestBody Company company) {
+        return companyService.addCompany(company);
     }
 
     //edit Company
-    @PostMapping("/updatecompany/{uuid}")
+    @PostMapping("/update/{uuid}")
     public String updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
         return null;
     }
 
     //delete Branch
-    @PostMapping("/deletebranch")
+    @PostMapping("/delete/{uuid}")
     public String deletebranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
         return null;
     }
 
     //add Branch
-    @PostMapping("/addbranch")
+    @PostMapping("/addbranch/{uuid}")
     public String addBranch(@PathVariable UUID uuid, @RequestBody Company company) {
         return null;
     }
 
     //delete Company
-    @PostMapping("/deletecompany")
+    @PostMapping("/deletecompany/{uuid}")
     public String deleteCompany(@PathVariable UUID uuid, @RequestBody Company company) {
         return null;
     }
