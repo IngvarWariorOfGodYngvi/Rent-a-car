@@ -1,4 +1,4 @@
-package models;
+package com.example.auta.models;
 
 import java.util.List;
 

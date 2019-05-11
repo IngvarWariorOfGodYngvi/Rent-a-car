@@ -1,4 +1,4 @@
-package models;
+package com.example.auta.models;
 
 public class Customer {
 

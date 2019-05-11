@@ -1,11 +1,11 @@
-package models;
+package com.example.auta.models;
 
 import java.time.LocalDate;
 
 public class Rent {
 
-    Employee employee;
-    LocalDate rentalStart;
-    Reservation reservation;
-    String comment;
+    private Employee employee;
+    private LocalDate rentalStart;
+    private Reservation reservation;
+    private String comment;
 }
