@@ -1,0 +1,1 @@
+package com.example.auta.domain.repositories;public interface CompanyRepositories {}
