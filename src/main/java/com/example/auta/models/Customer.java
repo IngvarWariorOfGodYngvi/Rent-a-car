@@ -2,8 +2,8 @@ package com.example.auta.models;
 
 public class Customer {
 
-    String forname;
-    String lastname;
-    String email;
-    String address;
+    private String forname;
+    private String lastname;
+    private String email;
+    private String address;
 }

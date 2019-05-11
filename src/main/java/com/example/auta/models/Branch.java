@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Branch {
 
-    String address;
-    List employees;
-    List cars;
+    private String address;
+    private List employees;
+    private List cars;
 
 }

@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 
 public class Car {
 
-    String make;
-    String model;
-    Enum suspention;
-    Integer yearOfProduction;
-    String color;
-    Integer mileage;
-    Enum statusOfCar;
-    BigDecimal dailyPrice;
+    private String make;
+    private String model;
+    private Suspension suspention;
+    private Integer yearOfProduction;
+    private String color;
+    private Integer mileage;
+    private CarStatus carStatus;
+    private BigDecimal dailyPrice;
 
 }

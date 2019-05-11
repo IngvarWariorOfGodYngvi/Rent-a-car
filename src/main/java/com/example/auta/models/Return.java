@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 public class Return {
 
-    Employee employee;
-    LocalDate rentalEndDate;
-    Reservation reservation;
-    BigDecimal extraPayment;
+    private Employee employee;
+    private LocalDate rentalEndDate;
+    private Reservation reservation;
+    private BigDecimal extraPayment;
 
 }
