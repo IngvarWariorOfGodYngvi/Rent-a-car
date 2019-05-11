@@ -1,1 +1,1 @@
-package com.example.auta.models;public enum Position {    SUV,COUPE,SEDAN,HATCHBACK,KOMBI;}
+package com.example.auta.models;public enum Position {}
