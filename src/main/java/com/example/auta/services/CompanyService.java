@@ -2,15 +2,11 @@ package com.example.auta.services;
 
 import com.example.auta.domain.entities.CompanyEntity;
 import com.example.auta.domain.repositories.CompanyRepositories;
+import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -49,5 +45,24 @@ public class CompanyService {
                 .logotype(c.getLogotype())
                 .branches(c.getBranches())
                 .build();
+    }
+
+    public String updateCompany(Company company) {
+        return null;
+    }
+
+    public String deleteBranch(Branch branch) {
+        return null;
+    }
+
+    public boolean deleteCompany(UUID uuid) {
+
+            if (companyRepositories.existsById(uuid)){
+                companyRepositories.deleteById(uuid);
+                return true;
+            } else {
+                return false;
+            }
+
     }
 }

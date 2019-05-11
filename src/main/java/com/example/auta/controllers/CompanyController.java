@@ -23,16 +23,16 @@ public class CompanyController {
         return companyService.addCompany(company);
     }
 
-    //edit Company
+    //update Company
     @PostMapping("/update/{uuid}")
     public String updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
-        return null;
+        return companyService.updateCompany(company);
     }
 
     //delete Branch
     @PostMapping("/delete/{uuid}")
     public String deletebranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
-        return null;
+        return companyService.deleteBranch(branch);
     }
 
     //add Branch
@@ -43,8 +43,8 @@ public class CompanyController {
 
     //delete Company
     @PostMapping("/deletecompany/{uuid}")
-    public String deleteCompany(@PathVariable UUID uuid, @RequestBody Company company) {
-        return null;
+    public boolean deleteCompany(@PathVariable UUID uuid) {
+        return companyService.deleteCompany(uuid);
     }
 
 }
