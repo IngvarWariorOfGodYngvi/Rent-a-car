@@ -1,1 +1,0 @@
-package com.example.auta.models;public enum Position {}

@@ -1,4 +1,4 @@
-package com.example.auta.models;
+package com.example.auta.models.classes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

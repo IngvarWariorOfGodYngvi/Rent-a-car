@@ -1,5 +1,4 @@
-package com.example.auta.models;
-
+package com.example.auta.models.classes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class Company {
+public class Branch {
 
-    private String name;
-    private String domain;
     private String address;
-    private String owner;
-    private byte[] logotype;
-    private List branches;
+    private List employees;
+    private List cars;
 
 }

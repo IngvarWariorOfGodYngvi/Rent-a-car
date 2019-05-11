@@ -1,5 +1,6 @@
-package com.example.auta.models;
+package com.example.auta.models.classes;
 
+import com.example.auta.models.enums.Position;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
