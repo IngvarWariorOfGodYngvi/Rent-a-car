@@ -1,1 +1,1 @@
-package com.example.auta.domain.repositories;public interface CompanyRepositories {}
+package com.example.auta.domain.repositories;import org.springframework.data.repository.PagingAndSortingRepository;import org.springframework.stereotype.Repository;@Repositorypublic interface CompanyRepositories extends PagingAndSortingRepository {}
