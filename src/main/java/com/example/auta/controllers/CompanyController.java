@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -19,16 +20,19 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    //add Company
     @PostMapping("/addcompany")
     public UUID addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
     }
 
-    //update Company
     @PostMapping("/updatecompany/{uuid}")
     public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
         return companyService.updateCompany(uuid, company);
+    }
+
+    @GetMapping("/listcompanies")
+    public Map<UUID, Company> listCompanies(){
+        return companyService.getCompanies();
     }
 
     @DeleteMapping("{companyUUID}/deletebranch/{branchUUID}")
@@ -43,7 +47,6 @@ public class CompanyController {
         return companyService.addBranch(companyUUID, branch);
     }
 
-    //delete Company
     @DeleteMapping("/deletecompany/{uuid}")
     public boolean deleteCompany(@PathVariable UUID uuid) {
         return companyService.deleteCompany(uuid);

@@ -33,7 +33,7 @@ public class CompanyService {
         this.branchService = branchServ;
     }
 
-    public Map<UUID, Company> getCompany() {
+    public Map<UUID, Company> getCompanies() {
 
         Map<UUID,Company> map = new HashMap<>();
         companyRepository.findAll().forEach(
