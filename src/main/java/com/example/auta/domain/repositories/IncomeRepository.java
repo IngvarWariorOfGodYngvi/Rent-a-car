@@ -1,0 +1,1 @@
+package com.example.auta.domain.repositories;import com.example.auta.domain.entities.IncomeEntity;import org.springframework.data.repository.PagingAndSortingRepository;import java.util.UUID;public interface IncomeRepository extends PagingAndSortingRepository<IncomeEntity, UUID> {}
