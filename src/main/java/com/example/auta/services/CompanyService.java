@@ -6,9 +6,12 @@ import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
+import javassist.NotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,13 +22,18 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final BranchRepository branchRepository;
+    private final BranchService branchService;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepo, BranchRepository branchRepo){
+    public CompanyService(CompanyRepository companyRepo,
+                          BranchRepository branchRepo,
+                          BranchService branchServ){
         this.companyRepository = companyRepo;
         this.branchRepository = branchRepo;
+        this.branchService = branchServ;
     }
-    public Map<UUID, Company> getCompany() {
+
+    public Map<UUID, Company> getCompanies() {
 
         Map<UUID,Company> map = new HashMap<>();
         companyRepository.findAll().forEach(
@@ -104,7 +112,13 @@ public class CompanyService {
                 .build();
     }
 
-    public UUID addBranch(Branch branch) {
-        return null;
+    public UUID addBranch(UUID companyUUID, Branch branch) throws EntityNotFoundException {
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        BranchEntity branchEntity = branchService.saveBranch(branch);
+        company.getBranches().add(branchEntity);
+        companyRepository.save(company);
+        return branchEntity.getId();
     }
 }
