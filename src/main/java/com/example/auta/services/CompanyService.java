@@ -105,4 +105,8 @@ public class CompanyService {
                 .branches(c.getBranches())
                 .build();
     }
+
+    public UUID addBranch(Branch branch) {
+        return null;
+    }
 }
