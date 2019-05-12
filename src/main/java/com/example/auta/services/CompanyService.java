@@ -6,10 +6,13 @@ import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepositories;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
+import com.example.auta.models.classes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +26,13 @@ public class CompanyService {
     public CompanyService(CompanyRepositories companyRepo, BranchRepository branchRepo){
         this.companyRepositories = companyRepo;
         this.branchRepository = branchRepo;
+    }
+    public Map<UUID, Company> getCompany() {
+
+        Map<UUID,Company> map = new HashMap<>();
+        companyRepositories.findAll().forEach(
+                element -> map.put(element.getId(),map(element)));
+        return map;
     }
 
     public UUID addCompany(Company company) {
@@ -94,5 +104,9 @@ public class CompanyService {
                 .logotype(c.getLogotype())
                 .branches(c.getBranches())
                 .build();
+    }
+
+    public UUID addBranch(Branch branch) {
+        return null;
     }
 }

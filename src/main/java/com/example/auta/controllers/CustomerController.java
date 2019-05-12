@@ -21,7 +21,7 @@ public class CustomerController {
     public Map<UUID, Customer> customers(){ return customerService.getCustomers();}
 
     @PostMapping("/add")
-    public UUID addAnimal(@Valid @RequestBody Customer customer) {
+    public UUID addCustomer(@Valid @RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
