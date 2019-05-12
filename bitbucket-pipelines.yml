@@ -11,4 +11,5 @@ pipelines:
         caches:
           - gradle
         script:
-        - clean testClasses
+        - clean 
+        - testClasses
