@@ -7,6 +7,7 @@ import com.example.auta.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 
@@ -38,8 +39,8 @@ public class CompanyController {
 
     @PostMapping("{companyUUID}/addbranch")
     public UUID addBranch(@PathVariable UUID companyUUID,
-                          @RequestBody Branch branch) {
-        return companyService.addBranch(conmpanyUUID, branch);
+                          @RequestBody Branch branch) throws EntityNotFoundException {
+        return companyService.addBranch(companyUUID, branch);
     }
 
     //delete Company
