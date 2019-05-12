@@ -19,26 +19,26 @@ public class CompanyController {
     private CompanyService companyService;
 
     //add Company
-    @PostMapping("/add")
+    @PostMapping("/addcompany")
     public UUID addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
     }
 
     //update Company
-    @PostMapping("/update/{uuid}")
+    @PostMapping("/updatecompany/{uuid}")
     public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
         return companyService.updateCompany(uuid, company);
     }
 
     //delete Branch
-    @DeleteMapping("/delete/{uuid}")
-    public String deleteBranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
-        return companyService.deleteBranch(branch);
+    @DeleteMapping("/deletebranch/{uuid}")
+    public String deleteBranch(@PathVariable UUID companyUuid, UUID branchUuid) {
+        return companyService.deleteBranch(companyUuid,branchUuid);
     }
 
     //add Branch
     @PostMapping("/addbranch/{uuid}")
-    public String addBranch(@PathVariable UUID uuid, @RequestBody Company company) {
+    public String addBranch(@PathVariable UUID companyUuid, Branch branch) {
         return null;
     }
 

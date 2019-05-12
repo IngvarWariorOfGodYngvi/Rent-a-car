@@ -41,8 +41,17 @@ public class CompanyService {
 
     }
 
-    public String deleteBranch(Branch branch) {
-        return null;
+    public boolean deleteBranch(UUID companyUuid, UUID branchUuid) {
+
+
+
+//        branches.get by id
+        if (companyRepositories.existsById(companyUuid)) {
+            companyRepositories.deleteById(branchUuid);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean deleteCompany(UUID uuid) {
