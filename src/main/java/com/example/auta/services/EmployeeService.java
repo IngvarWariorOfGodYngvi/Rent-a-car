@@ -15,7 +15,7 @@ import java.util.UUID;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-
+    private final BranchService branchService;
     public Map<UUID, Employee> getEmployees() {
 
         Map<UUID, Employee> map = new HashMap<>();
@@ -30,12 +30,26 @@ public class EmployeeService {
 
 
 
-    public boolean removeCustomer(UUID id) {
-        return false;
+    public boolean removeEmployee(UUID id) {
+        if(employeeRepository.findById(id).isPresent()){
+            employeeRepository.deleteById(id);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public boolean editEmployee(UUID id, Employee employee) {
-        return false;
+
+        if(!employeeRepository.findById(id).isPresent() || employee == null){
+            throw new IllegalArgumentException("Wrong argument");
+        }
+        EmployeeEntity newEntity = employeeRepository.findById(id).get();
+        newEntity.setForname(employee.getForname());
+        newEntity.setLastname(employee.getLastname());
+        newEntity.setPosition(employee.getPosition());
+        newEntity.setBranch(branchService.saveBranch(employee.getBranch()));
+        return true;
     }
 
     private Employee map(EmployeeEntity source) {
@@ -43,7 +57,7 @@ public class EmployeeService {
        return new Employee().builder()
                .forname(source.getForname())
                 .lastname(source.getLastname())
-                .branch()
+                .branch(branchService.readBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
     }
@@ -53,7 +67,7 @@ public class EmployeeService {
         return new EmployeeEntity().builder()
                 .forname(source.getForname())
                 .lastname(source.getLastname())
-               // .branch(source.getBranch())
+                .branch(branchService.saveBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
     }
