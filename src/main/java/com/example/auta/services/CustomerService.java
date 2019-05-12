@@ -1,7 +1,7 @@
 package com.example.auta.services;
 
 import com.example.auta.domain.entities.CustomerEntity;
-import com.example.auta.domain.repositories.CustomerRepositories;
+import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.models.classes.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class CustomerService {
 
-    private final CustomerRepositories customerRepositories;
+    private final CustomerRepository customerRepositories;
 
 
     public UUID addCustomer(Customer customer) {

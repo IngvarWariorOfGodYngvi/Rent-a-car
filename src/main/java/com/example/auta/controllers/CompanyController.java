@@ -11,7 +11,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/Company")
+@RequestMapping("/company")
 public class CompanyController {
 
 
@@ -19,27 +19,27 @@ public class CompanyController {
     private CompanyService companyService;
 
     //add Company
-    @PostMapping("/add")
+    @PostMapping("/addcompany")
     public UUID addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
     }
 
     //update Company
-    @PostMapping("/update/{uuid}")
+    @PostMapping("/updatecompany/{uuid}")
     public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
         return companyService.updateCompany(uuid, company);
     }
 
     //delete Branch
-    @DeleteMapping("/delete/{uuid}")
-    public String deleteBranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
-        return companyService.deleteBranch(branch);
+    @DeleteMapping("/deletebranch/{uuid}")
+    public boolean deleteBranch(@PathVariable UUID companyUuid, UUID branchUuid) throws Exception {
+        return companyService.deleteBranch(companyUuid,branchUuid);
     }
 
     //add Branch
-    @PostMapping("/addbranch/{uuid}")
-    public String addBranch(@PathVariable UUID uuid, @RequestBody Company company) {
-        return null;
+    @PostMapping("/addbranch")
+    public UUID addBranch(@RequestBody Branch branch) {
+        return companyService.addBranch(branch);
     }
 
     //delete Company

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Reservation {
 
-    private LocalDate raservationDate;
+    private LocalDate reservationDate;
     private Customer customer;
     private Car car;
     private LocalDate rentalStartDate;
