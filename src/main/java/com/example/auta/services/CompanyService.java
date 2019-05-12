@@ -7,6 +7,7 @@ import com.example.auta.models.classes.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,15 +24,36 @@ public class CompanyService {
         return companyRepositories.save(map(company)).getId();
     }
 
-    private Company map(CompanyEntity c) {
-        return new Company().builder()
-                .name(c.getName())
-                .domain(c.getDomain())
-                .address(c.getAddress())
-                .owner(c.getOwner())
-                .logotype(c.getLogotype())
-                .branches(c.getBranches())
-                .build();
+    public boolean updateCompany(UUID uuid, Company company) {
+        Optional<CompanyEntity> updateCompany = companyRepositories.findById(uuid);
+        if (updateCompany.isPresent()) {
+            updateCompany.get().setName(company.getName());
+            updateCompany.get().setOwner(company.getOwner());
+            updateCompany.get().setAddress(company.getAddress());
+            updateCompany.get().setBranches(company.getBranches());
+            updateCompany.get().setDomain(company.getDomain());
+            updateCompany.get().setLogotype(company.getLogotype());
+            companyRepositories.save(updateCompany.get());
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public String deleteBranch(Branch branch) {
+        return null;
+    }
+
+    public boolean deleteCompany(UUID uuid) {
+
+        if (companyRepositories.existsById(uuid)) {
+            companyRepositories.deleteById(uuid);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     private CompanyEntity map(Company c) {
@@ -47,22 +69,14 @@ public class CompanyService {
                 .build();
     }
 
-    public String updateCompany(Company company) {
-        return null;
-    }
-
-    public String deleteBranch(Branch branch) {
-        return null;
-    }
-
-    public boolean deleteCompany(UUID uuid) {
-
-            if (companyRepositories.existsById(uuid)){
-                companyRepositories.deleteById(uuid);
-                return true;
-            } else {
-                return false;
-            }
-
+    private Company map(CompanyEntity c) {
+        return new Company().builder()
+                .name(c.getName())
+                .domain(c.getDomain())
+                .address(c.getAddress())
+                .owner(c.getOwner())
+                .logotype(c.getLogotype())
+                .branches(c.getBranches())
+                .build();
     }
 }

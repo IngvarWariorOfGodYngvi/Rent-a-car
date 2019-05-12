@@ -25,13 +25,13 @@ public class CompanyController {
 
     //update Company
     @PostMapping("/update/{uuid}")
-    public String updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
-        return companyService.updateCompany(company);
+    public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
+        return companyService.updateCompany(uuid, company);
     }
 
     //delete Branch
-    @PostMapping("/delete/{uuid}")
-    public String deletebranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
+    @DeleteMapping("/delete/{uuid}")
+    public String deleteBranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
         return companyService.deleteBranch(branch);
     }
 
@@ -42,7 +42,7 @@ public class CompanyController {
     }
 
     //delete Company
-    @PostMapping("/deletecompany/{uuid}")
+    @DeleteMapping("/deletecompany/{uuid}")
     public boolean deleteCompany(@PathVariable UUID uuid) {
         return companyService.deleteCompany(uuid);
     }
