@@ -1,10 +1,13 @@
 package com.example.auta.services;
 
+import com.example.auta.domain.entities.BranchEntity;
 import com.example.auta.domain.entities.CompanyEntity;
+import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepositories;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +17,12 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepositories companyRepositories;
+    private final BranchRepository branchRepository;
 
     @Autowired
-    public CompanyService(CompanyRepositories company) {
-        this.companyRepositories = company;
+    public CompanyService(CompanyRepositories companyRepo, BranchRepository branchRepo){
+        this.companyRepositories = companyRepo;
+        this.branchRepository = branchRepo;
     }
 
     public UUID addCompany(Company company) {
@@ -41,13 +46,15 @@ public class CompanyService {
 
     }
 
-    public boolean deleteBranch(UUID companyUuid, UUID branchUuid) {
-
-
-
-//        branches.get by id
-        if (companyRepositories.existsById(companyUuid)) {
-            companyRepositories.deleteById(branchUuid);
+    public boolean deleteBranch(UUID companyUUID, UUID branchUUID) throws Exception {
+        CompanyEntity company = companyRepositories
+                .findById(companyUUID)
+                .orElseThrow(Exception::new);
+        BranchEntity branch = branchRepository
+                .findById(branchUUID)
+                .orElseThrow(Exception::new);
+        if (company.getBranches().remove(branch)){
+            companyRepositories.save(company);
             return true;
         } else {
             return false;
