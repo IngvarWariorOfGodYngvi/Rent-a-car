@@ -6,6 +6,7 @@ import com.example.auta.models.classes.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,15 +24,32 @@ public class CustomerService {
     
 
     public Map<UUID, Customer> getCustomers() {
-        return null;
+
+        Map<UUID,Customer> map = new HashMap<>();
+        customerRepositories.findAll().forEach(
+                element -> map.put(element.getId(),map(element)));
+        return map;
     }
 
     public boolean removeCustomer(UUID id) {
-        return false;
+        if(customerRepositories.findById(id).isPresent()){
+            customerRepositories.deleteById(id);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public boolean editCustomer(UUID id, Customer customer) {
-        return false;
+        if(!customerRepositories.findById(id).isPresent() || customer == null){
+            throw new IllegalArgumentException("Wrong argument");
+        }
+        CustomerEntity newEntity = customerRepositories.findById(id).get();
+        newEntity.setAddress(customer.getAddress());
+        newEntity.setEmail(customer.getEmail());
+        newEntity.setForname(customer.getForname());
+        newEntity.setLastname(customer.getLastname());
+        return true;
     }
 
     private Customer map(CustomerEntity source) {
