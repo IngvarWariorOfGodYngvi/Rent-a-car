@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CompanyService {
@@ -69,6 +66,7 @@ public class CompanyService {
         BranchEntity branch = branchRepository
                 .findById(branchUUID)
                 .orElseThrow(Exception::new);
+        company.getBranches().size();
         if (company.getBranches().remove(branch)){
             companyRepository.save(company);
             return true;
@@ -118,7 +116,7 @@ public class CompanyService {
                 .orElseThrow(EntityNotFoundException::new);
         BranchEntity branchEntity = branchService.saveBranch(branch);
         company.getBranches().add(branchEntity);
-        companyRepository.save(company);
+        companyRepository.saveAndFlush(company);
         return branchEntity.getId();
     }
 }
