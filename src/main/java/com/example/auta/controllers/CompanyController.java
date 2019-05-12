@@ -11,7 +11,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/Company")
+@RequestMapping("/company")
 public class CompanyController {
 
 
