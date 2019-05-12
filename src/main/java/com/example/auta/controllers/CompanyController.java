@@ -14,37 +14,38 @@ import java.util.UUID;
 @RequestMapping("/Company")
 public class CompanyController {
 
+
     @Autowired
     private CompanyService companyService;
 
     //add Company
-    @PostMapping("/addcompany")
-    public String addBranch(@RequestBody Company company) {
-        return null;
+    @PostMapping("/add")
+    public UUID addCompany(@RequestBody Company company) {
+        return companyService.addCompany(company);
     }
 
-    //edit Company
-    @PostMapping("/updatecompany/{uuid}")
-    public String updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
-        return null;
+    //update Company
+    @PostMapping("/update/{uuid}")
+    public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
+        return companyService.updateCompany(uuid, company);
     }
 
     //delete Branch
-    @PostMapping("/deletebranch")
-    public String deletebranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
-        return null;
+    @DeleteMapping("/delete/{uuid}")
+    public String deleteBranch(@PathVariable UUID uuid, @RequestBody Branch branch) {
+        return companyService.deleteBranch(branch);
     }
 
     //add Branch
-    @PostMapping("/addbranch")
+    @PostMapping("/addbranch/{uuid}")
     public String addBranch(@PathVariable UUID uuid, @RequestBody Company company) {
         return null;
     }
 
     //delete Company
-    @PostMapping("/deletecompany")
-    public String deleteCompany(@PathVariable UUID uuid, @RequestBody Company company) {
-        return null;
+    @DeleteMapping("/deletecompany/{uuid}")
+    public boolean deleteCompany(@PathVariable UUID uuid) {
+        return companyService.deleteCompany(uuid);
     }
 
 }
