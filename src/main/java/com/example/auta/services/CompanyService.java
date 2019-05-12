@@ -19,12 +19,17 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final BranchRepository branchRepository;
+    private final BranchService branchService;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepo, BranchRepository branchRepo){
+    public CompanyService(CompanyRepository companyRepo,
+                          BranchRepository branchRepo,
+                          BranchService branchServ){
         this.companyRepository = companyRepo;
         this.branchRepository = branchRepo;
+        this.branchService = branchServ;
     }
+
     public Map<UUID, Company> getCompany() {
 
         Map<UUID,Company> map = new HashMap<>();
@@ -104,7 +109,13 @@ public class CompanyService {
                 .build();
     }
 
-    public UUID addBranch(Branch branch) {
+    public UUID addBranch(UUID companyUUID, Branch branch) throws Exception {
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
+                .orElseThrow(Exception::new);
+        BranchEntity branchEntity = branchService.saveBranch(branch);
+
+
         return null;
     }
 }

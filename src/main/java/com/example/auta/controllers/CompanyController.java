@@ -30,16 +30,16 @@ public class CompanyController {
         return companyService.updateCompany(uuid, company);
     }
 
-    //delete Branch
-    @DeleteMapping("/deletebranch/{uuid}")
-    public boolean deleteBranch(@PathVariable UUID companyUuid, UUID branchUuid) throws Exception {
-        return companyService.deleteBranch(companyUuid,branchUuid);
+    @DeleteMapping("{companyUUID}/deletebranch/{branchUUID}")
+    public boolean deleteBranch(@PathVariable UUID companyUUID,
+                                @PathVariable UUID branchUUID) throws Exception {
+        return companyService.deleteBranch(companyUUID,branchUUID);
     }
 
-    //add Branch
-    @PostMapping("/addbranch")
-    public UUID addBranch(@RequestBody Branch branch) {
-        return companyService.addBranch(branch);
+    @PostMapping("{companyUUID}/addbranch")
+    public UUID addBranch(@PathVariable UUID companyUUID,
+                          @RequestBody Branch branch) {
+        return companyService.addBranch(conmpanyUUID, branch);
     }
 
     //delete Company
