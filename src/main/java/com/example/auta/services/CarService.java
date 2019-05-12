@@ -22,11 +22,11 @@ public class CarService {
     }
 
     public boolean deleteCar(UUID uuid) {
-        return null;
+        return false;
     }
 
     public boolean updateCarStatus(UUID uuid) {
-        return null;
+        return false;
     }
 
     public UUID updateCarMileage(UUID uuid) {
