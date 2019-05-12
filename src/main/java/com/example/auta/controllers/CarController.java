@@ -23,7 +23,6 @@ public class CarController {
     @DeleteMapping("/deletecar/{uuid}")
     public boolean deleteCar(@PathVariable UUID uuid) {
         return carService.deleteCar(uuid);
-
     }
 
     @PostMapping("/updatecarstatus/{uuid}")
