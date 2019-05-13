@@ -6,13 +6,12 @@ import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
-import javassist.NotFoundException;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -43,17 +42,33 @@ public class CompanyService {
     }
 
     public boolean updateCompany(UUID uuid, Company company) {
-        Optional<CompanyEntity> updateCompany = companyRepository.findById(uuid);
-        if (updateCompany.isPresent()) {
-            updateCompany.get().setName(company.getName());
-            updateCompany.get().setOwner(company.getOwner());
-            updateCompany.get().setAddress(company.getAddress());
-            updateCompany.get().setBranches(company.getBranches());
-            updateCompany.get().setDomain(company.getDomain());
-            updateCompany.get().setLogotype(company.getLogotype());
-            companyRepository.save(updateCompany.get());
+        try{
+            CompanyEntity updateCompanyEntity = companyRepository.findById(uuid).orElseThrow(EntityNotFoundException::new);
+            if (company.getName() != null){
+                updateCompanyEntity.setName(company.getName());
+            }
+            if (company.getOwner() != null){
+                updateCompanyEntity.setOwner(company.getOwner());
+            }
+            if (company.getAddress() != null){
+                updateCompanyEntity.setAddress(company.getAddress());
+            }
+            if (company.getBranches() != null){
+                updateCompanyEntity.getBranches().clear();
+                updateCompanyEntity.getBranches().addAll(company.getBranches()
+                                                                 .stream()
+                                                                 .map(branchService::saveBranch)
+                                                                 .collect(Collectors.toList()));
+            }
+            if (company.getDomain() != null){
+                updateCompanyEntity.setDomain(company.getDomain());
+            }
+            if (company.getLogotype() != null){
+                updateCompanyEntity.setLogotype(company.getLogotype());
+            }
+            companyRepository.save(updateCompanyEntity);
             return true;
-        } else {
+        } catch (EntityNotFoundException ex){
             return false;
         }
 
@@ -87,26 +102,30 @@ public class CompanyService {
     }
 
     private CompanyEntity map(Company c) {
-        CompanyEntity cc = new CompanyEntity();
-
-        return cc.builder()
+        return CompanyEntity.builder()
                 .name(c.getName())
                 .domain(c.getDomain())
                 .address(c.getAddress())
                 .owner(c.getOwner())
                 .logotype(c.getLogotype())
-                .branches(c.getBranches())
+                .branches(c.getBranches()
+                                  .stream()
+                                  .map(branchService::saveBranch)
+                                  .collect(Collectors.toList()))
                 .build();
     }
 
     private Company map(CompanyEntity c) {
-        return new Company().builder()
+        return Company.builder()
                 .name(c.getName())
                 .domain(c.getDomain())
                 .address(c.getAddress())
                 .owner(c.getOwner())
                 .logotype(c.getLogotype())
-                .branches(c.getBranches())
+                .branches(c.getBranches()
+                                  .stream()
+                                  .map(branchService::readBranch)
+                                  .collect(Collectors.toList()))
                 .build();
     }
 

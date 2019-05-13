@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,6 +20,7 @@ public class Company {
     private String address;
     private String owner;
     private byte[] logotype;
-    private List branches;
+    @Builder.Default
+    private List<Branch> branches = new ArrayList<>();
 
 }

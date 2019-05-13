@@ -25,8 +25,9 @@ public class CompanyController {
         return companyService.addCompany(company);
     }
 
-    @PostMapping("/updatecompany/{uuid}")
-    public boolean updateCompany(@PathVariable UUID uuid, @RequestBody Company company) {
+    @PostMapping("/{uuid}/updatecompany")
+    public boolean updateCompany(@PathVariable UUID uuid,
+                                 @RequestBody Company company) {
         return companyService.updateCompany(uuid, company);
     }
 
