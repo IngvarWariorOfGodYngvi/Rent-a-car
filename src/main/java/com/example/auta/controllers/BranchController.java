@@ -18,7 +18,7 @@ public class BranchController {
     private CarService carService;
 
 
-    @PostMapping("/addcar/{branchUUID}")
+    @PostMapping("/{branchUUID}/addcar")
     public UUID addCar(@PathVariable UUID branchUUID, @RequestBody Car car) throws Exception {
         return carService.addCar(branchUUID,car);
     }
