@@ -33,6 +33,6 @@ public class BranchController {
                              @PathVariable UUID carUUID) throws Exception {
         return carService.deleteCar(branchUUID,carUUID);
     }
-    @PostMapping("{branchUUID}/employeelist")
+    @PostMapping("{/branchUUID}/employeelist")
     public Map<UUID, Employee> getEmployee() {return employeeService.getEmployees();}
 }

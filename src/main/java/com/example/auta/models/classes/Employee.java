@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Employee {
 
-    private String forname;
-    private String lastname;
+    private String forename;
+    private String surname;
     private Position position;
     private Branch branch;
 

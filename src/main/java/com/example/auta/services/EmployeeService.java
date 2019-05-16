@@ -45,8 +45,8 @@ public class EmployeeService {
             throw new IllegalArgumentException("Wrong argument");
         }
         EmployeeEntity newEntity = employeeRepository.findById(id).get();
-        newEntity.setForname(employee.getForname());
-        newEntity.setLastname(employee.getLastname());
+        newEntity.setForname(employee.getForename());
+        newEntity.setLastname(employee.getSurname());
         newEntity.setPosition(employee.getPosition());
         newEntity.setBranch(branchService.saveBranch(employee.getBranch()));
         return true;
@@ -55,8 +55,8 @@ public class EmployeeService {
     private Employee map(EmployeeEntity source) {
 
        return new Employee().builder()
-               .forname(source.getForname())
-                .lastname(source.getLastname())
+               .forename(source.getForname())
+                .surname(source.getLastname())
                 .branch(branchService.readBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
@@ -65,8 +65,8 @@ public class EmployeeService {
     private EmployeeEntity map(Employee source) {
 
         return new EmployeeEntity().builder()
-                .forname(source.getForname())
-                .lastname(source.getLastname())
+                .forname(source.getForename())
+                .lastname(source.getSurname())
                 .branch(branchService.saveBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
