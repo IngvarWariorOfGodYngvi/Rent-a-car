@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,6 +16,7 @@ public class Branch {
 
     private String address;
     private List employees;
-    private List cars;
+    @Builder.Default
+    private List<Car> cars = new ArrayList<>();
 
 }

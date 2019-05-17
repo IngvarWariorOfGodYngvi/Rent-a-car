@@ -19,13 +19,11 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final BranchRepository branchRepository;
-    private final BranchService branchService;
 
     @Autowired
-    public CarService(CarRepository carRepo, BranchRepository branchRepository, BranchService branchService) {
+    public CarService(CarRepository carRepo, BranchRepository branchRepository) {
         this.carRepository = carRepo;
         this.branchRepository = branchRepository;
-        this.branchService = branchService;
     }
 
     public UUID addCar(UUID branchUUID, Car car) throws Exception {
@@ -69,11 +67,17 @@ public class CarService {
         return false;
     }
 
+    public CarEntity saveCar(Car car){
+        return carRepository.saveAndFlush(map(car));
+    }
+
+    public Car readCar(CarEntity car){
+        return map(car);
+    }
+
 
     private CarEntity map(Car c) {
-        CarEntity cc = new CarEntity();
-
-        return cc.builder()
+        return CarEntity.builder()
                 .make(c.getMake())
                 .model(c.getModel())
                 .suspension(c.getSuspension())
@@ -86,7 +90,7 @@ public class CarService {
     }
 
     private Car map(CarEntity c) {
-        return new Car().builder()
+        return Car.builder()
                 .make(c.getMake())
                 .model(c.getModel())
                 .suspension(c.getSuspension())
