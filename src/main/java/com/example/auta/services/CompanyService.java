@@ -57,7 +57,7 @@ public class CompanyService {
                 updateCompanyEntity.getBranches().clear();
                 updateCompanyEntity.getBranches().addAll(company.getBranches()
                                                                  .stream()
-                                                                 .map(branchService::saveBranch)
+                                                                 .map(branchService::getOrCreateBranchEntity)
                                                                  .collect(Collectors.toList()));
             }
             if (company.getDomain() != null){
@@ -110,7 +110,7 @@ public class CompanyService {
                 .logotype(c.getLogotype())
                 .branches(c.getBranches()
                                   .stream()
-                                  .map(branchService::saveBranch)
+                                  .map(branchService::getOrCreateBranchEntity)
                                   .collect(Collectors.toList()))
                 .build();
     }
@@ -133,7 +133,7 @@ public class CompanyService {
         CompanyEntity company = companyRepository
                 .findById(companyUUID)
                 .orElseThrow(EntityNotFoundException::new);
-        BranchEntity branchEntity = branchService.saveBranch(branch);
+        BranchEntity branchEntity = branchService.getOrCreateBranchEntity(branch);
         company.getBranches().add(branchEntity);
         companyRepository.saveAndFlush(company);
         return branchEntity.getId();

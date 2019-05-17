@@ -45,7 +45,7 @@ public class CarService {
                 .findById(car)
                 .orElseThrow(Exception::new);
         boolean result = branch.getCars().remove(carEntity);
-        branchRepository.save(branch);
+        branchRepository.saveAndFlush(branch);
 
         return result;
     }

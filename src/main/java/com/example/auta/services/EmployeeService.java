@@ -1,5 +1,6 @@
 package com.example.auta.services;
 
+import com.example.auta.domain.entities.BranchEntity;
 import com.example.auta.domain.entities.EmployeeEntity;
 import com.example.auta.domain.repositories.EmployeeRepository;
 import com.example.auta.models.classes.Employee;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final BranchService branchService;
+
     public Map<UUID, Employee> getEmployees() {
 
         Map<UUID, Employee> map = new HashMap<>();
@@ -45,18 +48,29 @@ public class EmployeeService {
             throw new IllegalArgumentException("Wrong argument");
         }
         EmployeeEntity newEntity = employeeRepository.findById(id).get();
-        newEntity.setForname(employee.getForname());
-        newEntity.setLastname(employee.getLastname());
+        newEntity.setForename(employee.getForename());
+        newEntity.setSurname(employee.getSurname());
         newEntity.setPosition(employee.getPosition());
-        newEntity.setBranch(branchService.saveBranch(employee.getBranch()));
+        newEntity.setBranch(branchService.getOrCreateBranchEntity(employee.getBranch()));
         return true;
+    }
+
+    public EmployeeEntity getOrCreateEmployeeEntity(Employee employee){
+        Optional<EmployeeEntity> employeeEntity = employeeRepository
+                .findEmployeeEntityByForenameEqualsAndSurnameEquals(employee.getForename(),
+                                                                    employee.getSurname());
+        return employeeEntity.orElse(employeeRepository.saveAndFlush(map(employee)));
+    }
+
+    public Employee readEmployee(EmployeeEntity employee){
+        return map(employee);
     }
 
     private Employee map(EmployeeEntity source) {
 
-       return new Employee().builder()
-               .forname(source.getForname())
-                .lastname(source.getLastname())
+       return Employee.builder()
+               .forename(source.getForename())
+                .surname(source.getSurname())
                 .branch(branchService.readBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
@@ -64,10 +78,10 @@ public class EmployeeService {
 
     private EmployeeEntity map(Employee source) {
 
-        return new EmployeeEntity().builder()
-                .forname(source.getForname())
-                .lastname(source.getLastname())
-                .branch(branchService.saveBranch(source.getBranch()))
+        return EmployeeEntity.builder()
+                .forename(source.getForename())
+                .surname(source.getSurname())
+                .branch(branchService.getOrCreateBranchEntity(source.getBranch()))
                 .position(source.getPosition())
                 .build();
     }

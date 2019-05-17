@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -15,8 +17,9 @@ import java.util.List;
 public class Branch {
 
     private String address;
-    private List employees;
     @Builder.Default
-    private List<Car> cars = new ArrayList<>();
+    private Set<Employee> employees = new HashSet<>();
+    @Builder.Default
+    private Set<Car> cars = new HashSet<>();
 
 }
