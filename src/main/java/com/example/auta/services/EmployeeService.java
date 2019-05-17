@@ -28,7 +28,7 @@ public class EmployeeService {
     }
 
     public UUID addEmployee(Employee employee) {
-        return employeeRepository.save(map(employee)).getId();
+        return employeeRepository.saveAndFlush(map(employee)).getId();
     }
 
 
