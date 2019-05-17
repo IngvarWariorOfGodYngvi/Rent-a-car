@@ -28,11 +28,13 @@ public class BranchController {
                        @RequestBody Car car) throws Exception {
         return carService.addCar(branchUUID,car);
     }
-    @PostMapping("{/branchUUID}/deletecar/{carUUID}")
+
+    @DeleteMapping("/{branchUUID}/deletecar/{carUUID}")
     public boolean deleteCar(@PathVariable UUID branchUUID,
                              @PathVariable UUID carUUID) throws Exception {
         return carService.deleteCar(branchUUID,carUUID);
     }
+
     @PostMapping("{/branchUUID}/employeelist")
     public Map<UUID, Employee> getEmployee() {return employeeService.getEmployees();}
 }

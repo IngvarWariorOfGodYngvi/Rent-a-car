@@ -70,12 +70,12 @@ public class BranchControllerTest {
     @Test
     public void deleteCar() {
         CarEntity car = CarEntity.builder().make("FIAT").build();
-        branchEntity.getCars().add(car);
+        CarEntity carEntity = carRepository.saveAndFlush(car);
+        branchEntity.getCars().add(carEntity);
         branchEntity = branchRepository.saveAndFlush(branchEntity);
-        CarEntity carEntity = branchEntity.getCars().get(0);
         testRestTemplate.delete(String.format("/branch/%s/deletecar/%s",
                                               branchEntity.getId().toString(),
                                               carEntity.getId().toString()));
-        assertTrue(!carRepository.findById(branchEntity.getId()).isPresent());
+        assertTrue(!carRepository.findById(carEntity.getId()).isPresent());
     }
 }
