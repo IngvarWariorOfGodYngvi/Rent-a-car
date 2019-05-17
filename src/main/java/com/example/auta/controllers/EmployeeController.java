@@ -25,9 +25,9 @@ public class EmployeeController {
         return employeeService.addEmployee(employee);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public boolean remove (@PathVariable UUID id) {
-        return employeeService.removeEmployee(id);
+    @DeleteMapping("/remove/{uuid}")
+    public boolean removeEmployee (@PathVariable UUID uuid) {
+        return employeeService.removeEmployee(uuid);
     }
 
     @PutMapping("/edit/{id}")
