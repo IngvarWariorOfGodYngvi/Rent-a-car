@@ -49,7 +49,7 @@ public class CompanyController {
         return companyService.addBranch(companyUUID, branch);
     }
 
-    @DeleteMapping("/{uuid}/deletecompany")
+    @DeleteMapping("/{uuid}/delete")
     public boolean deleteCompany(@PathVariable UUID uuid) {
         return companyService.deleteCompany(uuid);
     }
