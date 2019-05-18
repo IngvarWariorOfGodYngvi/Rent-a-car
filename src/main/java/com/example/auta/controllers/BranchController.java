@@ -21,10 +21,6 @@ public class BranchController {
     private BranchService branchService;
     @Autowired
     private CarService carService;
-    @Autowired
-    private EmployeeService employeeService;
-    @Autowired
-    private CustomerService customerService;
 
 
     @PostMapping("/{branchUUID}/addcar")
