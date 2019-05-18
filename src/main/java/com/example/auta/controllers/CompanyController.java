@@ -4,6 +4,7 @@ package com.example.auta.controllers;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import com.example.auta.models.classes.Customer;
+import com.example.auta.models.classes.Employee;
 import com.example.auta.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,11 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyUUID}/customerlist")
-    public Map<UUID, Customer> getCustomer(@PathVariable UUID companyUUID){return companyService.getCustomers(companyUUID);}
+    public Map<UUID, Customer> getCustomers(@PathVariable UUID companyUUID){return companyService.getCustomers(companyUUID);}
+
+    @GetMapping("/{companyUUID}/employeelist")
+    public Map<UUID, Employee> getEmployees(@PathVariable UUID companyUUID){
+        return companyService.getEmployees(companyUUID);
+    }
 
 }

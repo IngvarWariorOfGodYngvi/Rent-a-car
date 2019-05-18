@@ -2,11 +2,14 @@ package com.example.auta.services;
 
 import com.example.auta.domain.entities.BranchEntity;
 import com.example.auta.domain.entities.CompanyEntity;
+import com.example.auta.domain.entities.CustomerEntity;
 import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
+import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import com.example.auta.models.classes.Customer;
+import com.example.auta.models.classes.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +23,20 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final BranchRepository branchRepository;
     private final BranchService branchService;
+    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
     @Autowired
     public CompanyService(CompanyRepository companyRepo,
                           BranchRepository branchRepo,
-                          BranchService branchServ){
+                          BranchService branchServ,
+                          CustomerRepository customerRepo,
+                          CustomerService customerServ){
         this.companyRepository = companyRepo;
         this.branchRepository = branchRepo;
         this.branchService = branchServ;
+        this.customerRepository = customerRepo;
+        this.customerService = customerServ;
     }
 
     public Map<UUID, Company> getCompanies() {
@@ -112,7 +121,7 @@ public class CompanyService {
                 .branches(c.getBranches()
                                   .stream()
                                   .map(branchService::getOrCreateBranchEntity)
-                                  .collect(Collectors.toList()))
+                                  .collect(Collectors.toSet()))
                 .build();
     }
 
@@ -140,7 +149,24 @@ public class CompanyService {
         return branchEntity.getId();
     }
 
-    public Map<UUID, Customer> getCustomers(UUID branchUUID){
-        return null;
+    public Map<UUID, Customer> getCustomers(UUID companyUUID){
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        Set<CustomerEntity> customers = customerRepository.findCustomerEntitiesByCompany(company);
+        Map<UUID, Customer> customerMap = new HashMap<>();
+        customers.forEach(e->customerMap.put(e.getId(), customerService.readCustomer(e)));
+        return customerMap;
+    }
+
+    public Map<UUID, Employee> getEmployees(UUID companyUUID){
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        return company.getBranches().stream()
+                .map(e -> branchService.getEmployees(e.getId()))
+                .flatMap(e -> e.entrySet().stream())
+                .distinct()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
