@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Car {
 
+    private String licensePlate;
     private String make;
     private String model;
     private Suspension suspension;

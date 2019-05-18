@@ -8,43 +8,53 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class CustomerService {
 
-    private final CustomerRepository customerRepositories;
+    private final CustomerRepository customerRepository;
 
 
     public UUID addCustomer(Customer customer) {
-        return customerRepositories.save(map(customer)).getId();
+        return customerRepository.save(map(customer)).getId();
     }
 
-    
+    public Customer readCustomer(CustomerEntity customer) {
+        return map(customer);
+    }
+
+    public CustomerEntity getOrCreateCustomerEntity(Customer customer) {
+        Optional<CustomerEntity> customerEntity = customerRepository
+                .findCustomerEntityByFornameEqualsAndLastnameEqualsAndEmailEquals(
+                        customer.getForname(), customer.getLastname(), customer.getEmail());
+        return customerEntity.orElse(customerRepository.saveAndFlush(map(customer)));
+    }
 
     public Map<UUID, Customer> getCustomers() {
 
-        Map<UUID,Customer> map = new HashMap<>();
-        customerRepositories.findAll().forEach(
-                element -> map.put(element.getId(),map(element)));
+        Map<UUID, Customer> map = new HashMap<>();
+        customerRepository.findAll().forEach(
+                element -> map.put(element.getId(), map(element)));
         return map;
     }
 
     public boolean removeCustomer(UUID id) {
-        if(customerRepositories.findById(id).isPresent()){
-            customerRepositories.deleteById(id);
+        if (customerRepository.findById(id).isPresent()) {
+            customerRepository.deleteById(id);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     public boolean editCustomer(UUID id, Customer customer) {
-        if(!customerRepositories.findById(id).isPresent() || customer == null){
+        if (!customerRepository.findById(id).isPresent() || customer == null) {
             throw new IllegalArgumentException("Wrong argument");
         }
-        CustomerEntity newEntity = customerRepositories.findById(id).get();
+        CustomerEntity newEntity = customerRepository.findById(id).get();
         newEntity.setAddress(customer.getAddress());
         newEntity.setEmail(customer.getEmail());
         newEntity.setForname(customer.getForname());
@@ -54,7 +64,7 @@ public class CustomerService {
 
     private Customer map(CustomerEntity source) {
 
-       return new  Customer().builder()
+        return new Customer().builder()
                 .address(source.getAddress())
                 .email(source.getEmail())
                 .forname(source.getForname())
