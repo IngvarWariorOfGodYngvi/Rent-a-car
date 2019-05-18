@@ -1,9 +1,11 @@
 package com.example.auta.controllers;
 
 import com.example.auta.models.classes.Car;
+import com.example.auta.models.classes.Customer;
 import com.example.auta.models.classes.Employee;
 import com.example.auta.services.BranchService;
 import com.example.auta.services.CarService;
+import com.example.auta.services.CustomerService;
 import com.example.auta.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ public class BranchController {
     private CarService carService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private CustomerService customerService;
 
 
     @PostMapping("/{branchUUID}/addcar")
@@ -37,4 +41,7 @@ public class BranchController {
 
     @PostMapping("{/branchUUID}/employeelist")
     public Map<UUID, Employee> getEmployee() {return employeeService.getEmployees();}
+
+    @GetMapping("/branchUUID/customerlist")
+    public Map<UUID, Customer> getCustomer(){return customerService.getCustomers();}
 }
