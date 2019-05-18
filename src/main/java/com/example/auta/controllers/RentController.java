@@ -3,10 +3,7 @@ package com.example.auta.controllers;
 import com.example.auta.models.classes.Rent;
 import com.example.auta.services.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -21,14 +18,14 @@ public class RentController {
     @PostMapping ("/rentlist")
     public Map<UUID, Rent> getRents() {return rentService.getRents();}
 
-    @PostMapping ("/updatecomment/{uuid")
-    public boolean updateRentComment(@PathVariable UUID uuid){
-        return rentService.updateRentComment(uuid);
+    @PostMapping ("/updatecomment/{uuid}")
+    public boolean updateRentComment(@PathVariable UUID uuid, @RequestBody String comment){
+        return rentService.updateRentComment(uuid,comment);
     }
 
-    @PostMapping("/updateemployee/{uuid}")
-    public boolean updateRentEmployee(@PathVariable UUID uuid){
-        return rentService.updateRentEmployee(uuid);
+    @PostMapping("/updateemployee/{uuid}/{empid}")
+    public boolean updateRentEmployee(@PathVariable UUID uuid,UUID empid){
+        return rentService.updateRentEmployee(uuid,empid);
     }
 
 
