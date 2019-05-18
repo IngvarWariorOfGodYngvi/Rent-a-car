@@ -2,8 +2,10 @@ package com.example.auta.services;
 
 import com.example.auta.domain.entities.BranchEntity;
 import com.example.auta.domain.entities.CompanyEntity;
+import com.example.auta.domain.entities.CustomerEntity;
 import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
+import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import com.example.auta.models.classes.Customer;
@@ -20,14 +22,20 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final BranchRepository branchRepository;
     private final BranchService branchService;
+    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
     @Autowired
     public CompanyService(CompanyRepository companyRepo,
                           BranchRepository branchRepo,
-                          BranchService branchServ){
+                          BranchService branchServ,
+                          CustomerRepository customerRepo,
+                          CustomerService customerServ){
         this.companyRepository = companyRepo;
         this.branchRepository = branchRepo;
         this.branchService = branchServ;
+        this.customerRepository = customerRepo;
+        this.customerService = customerServ;
     }
 
     public Map<UUID, Company> getCompanies() {
@@ -141,6 +149,12 @@ public class CompanyService {
     }
 
     public Map<UUID, Customer> getCustomers(UUID branchUUID){
-        return null;
+        BranchEntity branchEntity = branchRepository
+                .findById(branchUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        Set<CustomerEntity> customers = customerRepository.findCustomerEntitiesByBranch(branchEntity);
+        Map<UUID, Customer> customerMap = new HashMap<>();
+        customers.forEach(e->customerMap.put(e.getId(), customerService.readCustomer(e)));
+        return customerMap;
     }
 }

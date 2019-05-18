@@ -77,7 +77,7 @@ public class CustomerService {
 
     private Customer map(CustomerEntity source) {
 
-        return new Customer().builder()
+        return Customer.builder()
                 .address(source.getAddress())
                 .email(source.getEmail())
                 .forname(source.getForname())
@@ -87,7 +87,7 @@ public class CustomerService {
 
     private CustomerEntity map(Customer source) {
 
-        return new CustomerEntity().builder()
+        return CustomerEntity.builder()
                 .address(source.getAddress())
                 .email(source.getEmail())
                 .forname(source.getForname())
