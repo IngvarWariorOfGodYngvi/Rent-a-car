@@ -19,8 +19,9 @@ public class ReservationService {
     private final CustomerService customerService;
     private final CarService carService;
     private final BranchService branchService;
-    public UUID addReservation(UUID branchUUID) {
-        return null;
+
+    public UUID addReservation(Reservation reservation) {
+        return reservationRepository.save(map(reservation)).getId();
     }
 
     public boolean removeReservation(UUID reservationUUID) {

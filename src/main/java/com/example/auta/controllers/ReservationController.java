@@ -15,9 +15,9 @@ public class ReservationController {
     public ReservationService reservationService;
 
 
-    @PostMapping("/add/{branchUUID}")
-    public UUID addReservation(@PathVariable UUID branchUUID) {
-        return reservationService.addReservation(branchUUID);
+    @PostMapping("/add")
+    public UUID addReservation(@RequestBody Reservation reservation) {
+        return reservationService.addReservation(reservation);
     }
 
     @DeleteMapping("/remove/{reservationUUID}")
