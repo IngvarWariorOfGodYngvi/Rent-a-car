@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -71,10 +72,6 @@ public class CarService {
         return carRepository.saveAndFlush(map(car));
     }
 
-    public Car readCar(CarEntity car){
-        return map(car);
-    }
-
 
     private CarEntity map(Car c) {
         return CarEntity.builder()
@@ -101,5 +98,16 @@ public class CarService {
                 .dailyPrice(c.getDailyPrice())
                 .build();
     }
+
+    public CarEntity getOrCreateCarEntity(Car car){
+        Optional<CarEntity> carEntity = carRepository
+                .findCarEntityByLicensePlateEquals(car.getLicensePlate());
+        return carEntity.orElse(carRepository.saveAndFlush(map(car)));
+    }
+
+    public Car readCar(CarEntity car){
+        return map(car);
+    }
+
 
 }
