@@ -15,6 +15,5 @@ public class Employee {
     private String forename;
     private String surname;
     private Position position;
-    private Branch branch;
 
 }

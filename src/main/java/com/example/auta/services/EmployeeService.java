@@ -17,7 +17,6 @@ import java.util.UUID;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final BranchService branchService;
 
     public Map<UUID, Employee> getEmployees() {
 
@@ -51,7 +50,6 @@ public class EmployeeService {
         newEntity.setForename(employee.getForename());
         newEntity.setSurname(employee.getSurname());
         newEntity.setPosition(employee.getPosition());
-        newEntity.setBranch(branchService.getOrCreateBranchEntity(employee.getBranch()));
         return true;
     }
 
@@ -71,7 +69,6 @@ public class EmployeeService {
        return Employee.builder()
                .forename(source.getForename())
                 .surname(source.getSurname())
-                .branch(branchService.readBranch(source.getBranch()))
                 .position(source.getPosition())
                 .build();
     }
@@ -81,7 +78,6 @@ public class EmployeeService {
         return EmployeeEntity.builder()
                 .forename(source.getForename())
                 .surname(source.getSurname())
-                .branch(branchService.getOrCreateBranchEntity(source.getBranch()))
                 .position(source.getPosition())
                 .build();
     }
