@@ -16,6 +16,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @GetMapping("/list")
     public Map<UUID, Employee> employees() {
         return employeeService.getEmployees();
     }
@@ -26,7 +27,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeUUID}/remove")
-    public boolean remove (@PathVariable UUID employeeUUID) {
+    public boolean removeEmployee(@PathVariable UUID employeeUUID) {
         return employeeService.removeEmployee(employeeUUID);
     }
 

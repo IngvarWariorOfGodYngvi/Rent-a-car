@@ -9,6 +9,7 @@ import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import com.example.auta.models.classes.Customer;
+import com.example.auta.models.classes.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -156,5 +157,16 @@ public class CompanyService {
         Map<UUID, Customer> customerMap = new HashMap<>();
         customers.forEach(e->customerMap.put(e.getId(), customerService.readCustomer(e)));
         return customerMap;
+    }
+
+    public Map<UUID, Employee> getEmployees(UUID companyUUID){
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        return company.getBranches().stream()
+                .map(e -> branchService.getEmployees(e.getId()))
+                .flatMap(e -> e.entrySet().stream())
+                .distinct()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

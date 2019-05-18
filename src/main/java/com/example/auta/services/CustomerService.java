@@ -40,7 +40,7 @@ public class CustomerService {
     public CustomerEntity getOrCreateCustomerEntity(Customer customer) {
         Optional<CustomerEntity> customerEntity = customerRepository
                 .findCustomerEntityByFornameEqualsAndLastnameEqualsAndEmailEquals(
-                        customer.getForname(), customer.getLastname(), customer.getEmail());
+                        customer.getForename(), customer.getSurname(), customer.getEmail());
         return customerEntity.orElse(customerRepository.saveAndFlush(map(customer)));
     }
 
@@ -60,8 +60,8 @@ public class CustomerService {
         CustomerEntity newEntity = customerRepository.findById(id).get();
         newEntity.setAddress(customer.getAddress());
         newEntity.setEmail(customer.getEmail());
-        newEntity.setForname(customer.getForname());
-        newEntity.setLastname(customer.getLastname());
+        newEntity.setForname(customer.getForename());
+        newEntity.setLastname(customer.getSurname());
         return true;
     }
 
@@ -80,8 +80,8 @@ public class CustomerService {
         return Customer.builder()
                 .address(source.getAddress())
                 .email(source.getEmail())
-                .forname(source.getForname())
-                .lastname(source.getLastname())
+                .forename(source.getForname())
+                .surname(source.getLastname())
                 .build();
     }
 
@@ -90,8 +90,8 @@ public class CustomerService {
         return CustomerEntity.builder()
                 .address(source.getAddress())
                 .email(source.getEmail())
-                .forname(source.getForname())
-                .lastname(source.getLastname())
+                .forname(source.getForename())
+                .lastname(source.getSurname())
                 .build();
     }
 }
