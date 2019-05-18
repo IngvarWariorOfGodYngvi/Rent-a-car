@@ -3,6 +3,7 @@ package com.example.auta.controllers;
 
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
+import com.example.auta.models.classes.Customer;
 import com.example.auta.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,8 @@ public class CompanyController {
     public boolean deleteCompany(@PathVariable UUID uuid) {
         return companyService.deleteCompany(uuid);
     }
+
+    @GetMapping("/{companyUUID}/customerlist")
+    public Map<UUID, Customer> getCustomer(@PathVariable UUID companyUUID){return companyService.getCustomers(companyUUID);}
 
 }

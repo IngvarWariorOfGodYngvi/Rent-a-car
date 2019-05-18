@@ -6,6 +6,7 @@ import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
 import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
+import com.example.auta.models.classes.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,5 +138,9 @@ public class CompanyService {
         company.getBranches().add(branchEntity);
         companyRepository.saveAndFlush(company);
         return branchEntity.getId();
+    }
+
+    public Map<UUID, Customer> getCustomers(UUID branchUUID){
+        return null;
     }
 }
