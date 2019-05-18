@@ -3,10 +3,7 @@ package com.example.auta.controllers;
 import com.example.auta.models.classes.Return;
 import com.example.auta.services.ReturnService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -23,13 +20,13 @@ public class ReturnController {
         return returnService.getReturns();
     }
 
-    @PostMapping("updateemployee/{uuid}")
-    public boolean updateReturnEmployee(@PathVariable UUID uuid) {
-        return returnService.updateReturnEmployee(uuid);
+    @PostMapping("updateemployee/{uuid}/{empid}")
+    public boolean updateReturnEmployee(@PathVariable UUID uuid,UUID empid) {
+        return returnService.updateReturnEmployee(uuid,empid);
     }
 
     @PostMapping("updateextrapay/{uuid}")
-    public boolean updateReturnExtraPayment(@PathVariable UUID uuid){
-        return returnService.updateReturnExtraPayment(uuid);
+    public boolean updateReturnExtraPayment(@PathVariable UUID uuid, @RequestBody Integer extraPay){
+        return returnService.updateReturnExtraPayment(uuid,extraPay);
     }
 }
