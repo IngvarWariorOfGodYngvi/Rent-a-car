@@ -57,7 +57,7 @@ public class BranchControllerTest {
         BranchEntity branch = BranchEntity.builder().address("ul. Cebulowa 34, 04-123 Warszawa").build();
         company.getBranches().add(branch);
         company = companyRepository.saveAndFlush(company);
-        branchEntity = company.getBranches().get(0);
+        branchEntity = company.getBranches().iterator().next();
     }
 
     @After

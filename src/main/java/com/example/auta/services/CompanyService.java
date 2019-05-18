@@ -120,7 +120,7 @@ public class CompanyService {
                 .branches(c.getBranches()
                                   .stream()
                                   .map(branchService::getOrCreateBranchEntity)
-                                  .collect(Collectors.toList()))
+                                  .collect(Collectors.toSet()))
                 .build();
     }
 
@@ -148,11 +148,11 @@ public class CompanyService {
         return branchEntity.getId();
     }
 
-    public Map<UUID, Customer> getCustomers(UUID branchUUID){
-        BranchEntity branchEntity = branchRepository
-                .findById(branchUUID)
+    public Map<UUID, Customer> getCustomers(UUID companyUUID){
+        CompanyEntity company = companyRepository
+                .findById(companyUUID)
                 .orElseThrow(EntityNotFoundException::new);
-        Set<CustomerEntity> customers = customerRepository.findCustomerEntitiesByBranch(branchEntity);
+        Set<CustomerEntity> customers = customerRepository.findCustomerEntitiesByCompany(company);
         Map<UUID, Customer> customerMap = new HashMap<>();
         customers.forEach(e->customerMap.put(e.getId(), customerService.readCustomer(e)));
         return customerMap;
