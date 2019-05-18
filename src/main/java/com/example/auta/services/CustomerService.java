@@ -14,20 +14,10 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
-
-    @Autowired
-    public CustomerService(CustomerRepository customerRepo,
-                           ReservationRepository reservationRepo,
-                           ReservationService reservationServ){
-        this.customerRepository =  customerRepo;
-        this.reservationRepository = reservationRepo;
-        this.reservationService = reservationServ;
-    }
 
     public UUID addCustomer(Customer customer) {
         return customerRepository.save(map(customer)).getId();
@@ -63,16 +53,6 @@ public class CustomerService {
         newEntity.setForname(customer.getForename());
         newEntity.setLastname(customer.getSurname());
         return true;
-    }
-
-    public Map<UUID, Reservation> getReservations(UUID customerUUID) throws EntityNotFoundException{
-        CustomerEntity customer = customerRepository
-                .findById(customerUUID)
-                .orElseThrow(EntityNotFoundException::new);
-        Set<ReservationEntity> reservationEntities = reservationRepository.findAllByCustomer(customer);
-        Map<UUID, Reservation> reservations = new HashMap<>();
-        reservationEntities.forEach(e->reservations.put(e.getId(), reservationService.read(e)));
-        return reservations;
     }
 
     private Customer map(CustomerEntity source) {
