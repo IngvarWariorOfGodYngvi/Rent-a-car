@@ -125,7 +125,7 @@ public class CompanyService {
                 .logotype(c.getLogotype())
                 .branches(c.getBranches()
                                   .stream()
-                                  .map(branchService::readBranch)
+                                  .map(branchService::read)
                                   .collect(Collectors.toList()))
                 .build();
     }

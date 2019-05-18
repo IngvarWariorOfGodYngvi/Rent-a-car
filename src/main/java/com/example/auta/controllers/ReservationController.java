@@ -14,7 +14,6 @@ public class ReservationController {
     @Autowired
     public ReservationService reservationService;
 
-
     @PostMapping("/add")
     public UUID addReservation(@RequestBody Reservation reservation) {
         return reservationService.addReservation(reservation);

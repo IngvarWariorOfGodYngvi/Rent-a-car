@@ -96,7 +96,7 @@ public class BranchControllerTest {
         Arrays.asList(employee1, employee2).forEach(employeeRepository::saveAndFlush);
         String branchUUID = branchEntity.getId().toString();
         ResponseEntity<Map<UUID, Employee>> re = testRestTemplate
-                .exchange(String.format("/branch/%s/employeelist", branchUUID),
+                .exchange(String.format("/branch/%s/employees", branchUUID),
                           HttpMethod.GET,
                           null,
                           new ParameterizedTypeReference<Map<UUID, Employee>>(){});

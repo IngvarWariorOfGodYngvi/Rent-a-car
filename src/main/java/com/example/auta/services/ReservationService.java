@@ -1,7 +1,6 @@
 package com.example.auta.services;
 
 import com.example.auta.domain.entities.ReservationEntity;
-import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
 import com.example.auta.models.classes.Reservation;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +31,10 @@ public class ReservationService {
         return false;
     }
 
+    public Reservation read(ReservationEntity reservation){
+        return map(reservation);
+    }
+
     public Map<UUID, Reservation> getReservation() {
         Map<UUID, Reservation> map = new HashMap<>();
         reservationRepository.findAll().forEach(
@@ -47,8 +50,8 @@ public class ReservationService {
                 .car(carService.readCar(source.getCar()))
                 .rentalStartDate(source.getRentalStartDate())
                 .rentalEndDate(source.getRentalEndDate())
-                .rentalBranch(branchService.readBranch(source.getRentalBranch()))
-                .returnBranch(branchService.readBranch(source.getReturnBranch()))
+                .rentalBranch(branchService.read(source.getRentalBranch()))
+                .returnBranch(branchService.read(source.getReturnBranch()))
                 .totalPrice(source.getTotalPrice())
                 .build();
     }

@@ -2,6 +2,7 @@ package com.example.auta.controllers;
 
 
 import com.example.auta.models.classes.Customer;
+import com.example.auta.models.classes.Reservation;
 import com.example.auta.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,6 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
-
-
-    public Map<UUID, Customer> customers() {
-        return customerService.getCustomers();
-    }
 
     @PostMapping("/add")
     public UUID addCustomer(@Valid @RequestBody Customer customer) {
@@ -39,6 +35,11 @@ public class CustomerController {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    @GetMapping("/{customerUUID}/reservations")
+    public Map<UUID, Reservation> getReservations(@PathVariable UUID customerUUID){
+        return customerService.getReservations(customerUUID);
     }
 
 }
