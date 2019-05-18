@@ -17,16 +17,16 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @PostMapping("/carlist")
+    @PostMapping("/list")
     public Map<UUID, Car> getCars(){ return carService.getCars();}
 
-    @PostMapping("/updatecarstatus/{uuid}")
-    public boolean updateCarStatus(@PathVariable UUID uuid) {
-        return carService.updateCarStatus(uuid);
+    @PostMapping("/{carUUID}/updatestatus")
+    public boolean updateCarStatus(@PathVariable UUID carUUID) {
+        return carService.updateCarStatus(carUUID);
     }
-    @PostMapping("/updatecarmileage/{uuid}")
-    public boolean updateCarMileage(@PathVariable UUID uuid){
-        return carService.updateCarMileage(uuid);
+    @PostMapping("/{carUUID}/updatemileage")
+    public boolean updateCarMileage(@PathVariable UUID carUUID){
+        return carService.updateCarMileage(carUUID);
     }
 
 }

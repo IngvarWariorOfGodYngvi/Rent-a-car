@@ -25,15 +25,15 @@ public class EmployeeController {
         return employeeService.addEmployee(employee);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public boolean remove (@PathVariable UUID id) {
-        return employeeService.removeEmployee(id);
+    @DeleteMapping("/{employeeUUID}/remove")
+    public boolean remove (@PathVariable UUID employeeUUID) {
+        return employeeService.removeEmployee(employeeUUID);
     }
 
-    @PutMapping("/edit/{id}")
-    public boolean edit(@RequestBody Employee employee, @PathVariable UUID id){
+    @PutMapping("/{employeeUUID}/edit")
+    public boolean edit(@RequestBody Employee employee, @PathVariable UUID employeeUUID){
         try {
-            return employeeService.editEmployee(id,employee);
+            return employeeService.editEmployee(employeeUUID,employee);
         }catch (Exception ex){
             return false;
         }

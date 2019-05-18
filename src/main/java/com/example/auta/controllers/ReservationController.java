@@ -20,12 +20,12 @@ public class ReservationController {
         return reservationService.addReservation(reservation);
     }
 
-    @DeleteMapping("/remove/{reservationUUID}")
+    @DeleteMapping("/{reservationUUID}/remove")
     public boolean removeReservation(@PathVariable UUID reservationUUID) {
         return reservationService.removeReservation(reservationUUID);
     }
 
-    @PostMapping("/update/{reservationUUID}")
+    @PostMapping("/{reservationUUID}/update")
     public boolean updateReservation(@PathVariable UUID reservationUUID, Reservation reservation){
         return reservationService.updateReservation();
     }

@@ -18,21 +18,25 @@ public class CustomerController {
     private CustomerService customerService;
 
 
-    public Map<UUID, Customer> customers(){ return customerService.getCustomers();}
+    public Map<UUID, Customer> customers() {
+        return customerService.getCustomers();
+    }
 
     @PostMapping("/add")
     public UUID addCustomer(@Valid @RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public boolean remove(@PathVariable UUID id) {return customerService.removeCustomer(id);}
+    @DeleteMapping("/{customerUUID}/remove")
+    public boolean remove(@PathVariable UUID customerUUID) {
+        return customerService.removeCustomer(customerUUID);
+    }
 
-    @PutMapping("/edit/{id}")
-    public boolean edit(@RequestBody Customer customer, @PathVariable UUID id){
+    @PutMapping("/{customerUUID}/edit")
+    public boolean edit(@RequestBody Customer customer, @PathVariable UUID customerUUID) {
         try {
-            return customerService.editCustomer(id,customer);
-        }catch (Exception ex){
+            return customerService.editCustomer(customerUUID, customer);
+        } catch (Exception ex) {
             return false;
         }
     }

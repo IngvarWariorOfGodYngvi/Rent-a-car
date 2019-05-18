@@ -21,18 +21,18 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping("/addcompany")
+    @PostMapping("/add")
     public UUID addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
     }
 
-    @PostMapping("/{uuid}/updatecompany")
-    public boolean updateCompany(@PathVariable UUID uuid,
+    @PostMapping("/{companyUUID}/update")
+    public boolean updateCompany(@PathVariable UUID companyUUID,
                                  @RequestBody Company company) {
-        return companyService.updateCompany(uuid, company);
+        return companyService.updateCompany(companyUUID, company);
     }
 
-    @GetMapping("/listcompanies")
+    @GetMapping("/list")
     public Map<UUID, Company> listCompanies(){
         return companyService.getCompanies();
     }
@@ -49,7 +49,7 @@ public class CompanyController {
         return companyService.addBranch(companyUUID, branch);
     }
 
-    @DeleteMapping("/deletecompany/{uuid}")
+    @DeleteMapping("/{uuid}/deletecompany")
     public boolean deleteCompany(@PathVariable UUID uuid) {
         return companyService.deleteCompany(uuid);
     }
