@@ -28,8 +28,13 @@ public class ReservationService {
         return reservationRepository.save(map(reservation)).getId();
     }
 
-    public boolean removeReservation(UUID reservationUUID) {
-        return false;
+    public boolean removeReservation(UUID reservationUUID) throws EntityNotFoundException {
+        ReservationEntity reservation = reservationRepository
+                .findById(reservationUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        reservationRepository.delete(reservation);
+        return !reservationRepository.findById(reservationUUID).isPresent();
+        
     }
 
     public boolean updateReservation() {
