@@ -31,13 +31,10 @@ public class CustomerController {
         return customerService.removeCustomer(customerUUID);
     }
 
-    @PutMapping("/{customerUUID}/edit")
-    public boolean edit(@RequestBody Customer customer, @PathVariable UUID customerUUID) {
-        try {
-            return customerService.editCustomer(customerUUID, customer);
-        } catch (Exception ex) {
-            return false;
-        }
+    @PostMapping("/{customerUUID}/update")
+    public boolean updateCustomer(@PathVariable UUID companyUUID,
+                                 @RequestBody Customer customer) {
+        return customerService.updateCustomer(companyUUID, customer);
     }
 
     @GetMapping("/{customerUUID}/reservations")
