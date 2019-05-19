@@ -75,6 +75,7 @@ public class ReservationService {
                 .rentalBranch(branchService.read(source.getRentalBranch()))
                 .returnBranch(branchService.read(source.getReturnBranch()))
                 .totalPrice(source.getTotalPrice())
+                .reservationStatus(source.getReservationStatus())
                 .build();
     }
 
@@ -90,6 +91,7 @@ public class ReservationService {
                 .rentalBranch(branchService.getOrCreateBranchEntity(source.getRentalBranch()))
                 .returnBranch(branchService.getOrCreateBranchEntity(source.getReturnBranch()))
                 .totalPrice(source.getTotalPrice())
+                .reservationStatus(source.getReservationStatus())
                 .build();
     }
 }

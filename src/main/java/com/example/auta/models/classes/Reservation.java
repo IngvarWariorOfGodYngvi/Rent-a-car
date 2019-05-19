@@ -1,5 +1,6 @@
 package com.example.auta.models.classes;
 
+import com.example.auta.models.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,7 @@ public class Reservation {
     private Branch rentalBranch;
     private Branch returnBranch;
     private BigDecimal totalPrice;
+
+    private ReservationStatus reservationStatus;
 
 }
