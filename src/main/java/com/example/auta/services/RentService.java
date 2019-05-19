@@ -53,6 +53,7 @@ public class RentService {
         rentEntity.setRentalStart(reservationEntity.getRentalStartDate());
         rentEntity.setEmployee(employeeEntity);
         rentEntity.setReservation(reservationEntity);
+        rentEntity.setStartMileage(reservationEntity.getCar().getMileage());
         reservationEntity.setReservationStatus(ReservationStatus.IN_RENT);
         return rentRepository.saveAndFlush(rentEntity).getId();
 
@@ -64,6 +65,7 @@ public class RentService {
                 .rentalStart(rent.getRentalStart())
                 .reservation(reservationService.getOrCreateReservationEntity(rent.getReservation()))
                 .comment(rent.getComment())
+                .startMileage(rent.getStartMileage())
                 .build();
 
     }

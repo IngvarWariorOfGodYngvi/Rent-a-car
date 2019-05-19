@@ -18,5 +18,5 @@ public class Return {
     private LocalDate rentalEndDate;
     private Reservation reservation;
     private BigDecimal extraPayment;
-
+    private Integer endMileage;
 }

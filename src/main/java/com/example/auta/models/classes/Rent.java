@@ -16,4 +16,5 @@ public class Rent {
     private LocalDate rentalStart;
     private Reservation reservation;
     private String comment;
+    private Integer startMileage;
 }
