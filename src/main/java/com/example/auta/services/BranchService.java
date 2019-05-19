@@ -26,7 +26,7 @@ public class BranchService {
     @Autowired
     public BranchService(BranchRepository branchRepo,
                          CarService carService,
-                         @Lazy EmployeeService employeeService){
+                         @Lazy EmployeeService employeeService) {
         this.branchRepository = branchRepo;
         this.carService = carService;
         this.employeeService = employeeService;
@@ -45,13 +45,13 @@ public class BranchService {
         return BranchEntity.builder()
                 .address(branch.getAddress())
                 .cars(branch.getCars()
-                              .stream()
-                              .map(carService::saveCar)
-                              .collect(Collectors.toSet()))
+                        .stream()
+                        .map(carService::saveCar)
+                        .collect(Collectors.toSet()))
                 .employees(branch.getEmployees()
-                                   .stream()
-                                   .map(employeeService::getOrCreateEmployeeEntity)
-                                   .collect(Collectors.toSet()))
+                        .stream()
+                        .map(employeeService::getOrCreateEmployeeEntity)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
@@ -59,41 +59,42 @@ public class BranchService {
         return Branch.builder()
                 .address(branch.getAddress())
                 .cars(branch.getCars()
-                              .stream()
-                              .map(carService::readCar)
-                              .collect(Collectors.toSet()))
+                        .stream()
+                        .map(carService::readCar)
+                        .collect(Collectors.toSet()))
                 .employees(branch.getEmployees()
-                                   .stream()
-                                   .map(employeeService::readEmployee)
-                                   .collect(Collectors.toSet()))
+                        .stream()
+                        .map(employeeService::readEmployee)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
-    public Map<UUID, Employee> getEmployees(UUID branchUUID){
+    public Map<UUID, Employee> getEmployees(UUID branchUUID) {
         Optional<BranchEntity> branchEntity = branchRepository
                 .findById(branchUUID);
-        if (branchEntity.isPresent()){
+        if (branchEntity.isPresent()) {
             Map<UUID, Employee> employees = new HashMap<>();
             Set<EmployeeEntity> set = branchEntity
                     .get().getEmployees();
-            set.forEach(e->employees.put(e.getId(),employeeService.readEmployee(e)));
+            set.forEach(e -> employees.put(e.getId(), employeeService.readEmployee(e)));
             System.out.println("a");
             return employees;
         } else {
             throw new EntityNotFoundException();
         }
     }
-    public Map<UUID, Car> getCars(UUID branchUUID){
+
+    public Map<UUID, Car> getCars(UUID branchUUID) {
         Optional<BranchEntity> branchEntity = branchRepository
                 .findById(branchUUID);
-        if(branchEntity.isPresent()){
-            Map<UUID,Car> cars = new HashMap<>();
+        if (branchEntity.isPresent()) {
+            Map<UUID, Car> cars = new HashMap<>();
             Set<CarEntity> set = branchEntity
                     .get()
                     .getCars();
-            set.forEach(c->cars.put(c.getId(),carService.readCar(c)));
+            set.forEach(c -> cars.put(c.getId(), carService.readCar(c)));
             return cars;
-        }else{
+        } else {
             throw new EntityNotFoundException();
         }
     }

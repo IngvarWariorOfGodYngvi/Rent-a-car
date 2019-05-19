@@ -66,7 +66,7 @@ public class CarService {
                     .findById(carUUID)
                     .orElseThrow(EntityNotFoundException::new);
             if (car.getCarStatus() != null) {
-                car.setCarStatus(car.getCarStatus());
+                updateCarEntity.setCarStatus(car.getCarStatus());
             }
             carRepository.save(updateCarEntity);
             return true;
@@ -74,8 +74,6 @@ public class CarService {
             return false;
         }
     }
-
-    //----------------------------------------------------------------------------
 
     public boolean updateCarMileage(UUID carUUID, Car car) {
         try {
@@ -91,7 +89,6 @@ public class CarService {
             return false;
         }
     }
-    //----------------------------------------------------------------------------
 
     public CarEntity saveCar(Car car) {
         return carRepository.saveAndFlush(map(car));

@@ -6,10 +6,8 @@ import com.example.auta.models.classes.Reservation;
 import com.example.auta.services.CustomerService;
 import com.example.auta.services.ReservationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +40,7 @@ public class CustomerController {
 
     @GetMapping("/{customerUUID}/reservations")
     public Map<UUID, Reservation> getReservations(@PathVariable UUID customerUUID){
-        return reservationService.getReservations(customerUUID);
+        return reservationService.getReservation(customerUUID);
     }
 
 }

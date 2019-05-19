@@ -21,22 +21,19 @@ public class ReturnService {
     public Map<UUID, Return> getReturns() {
         return null;
     }
-    //----------------------------------------------------------------------------
 
-    public boolean updateReturnEmployee(UUID uuid,UUID empId) {
+    public boolean updateReturnEmployee(UUID uuid, UUID empId) {
 
-        if (!returnRepository.findById(uuid).isPresent() || !employeeRepository.findById(empId).isPresent()){
+        if (!returnRepository.findById(uuid).isPresent() || !employeeRepository.findById(empId).isPresent()) {
             throw new IllegalArgumentException("Wrong argument");
         }
         ReturnEntity newEntity = returnRepository.findById(uuid).get();
         newEntity.setEmployee(employeeRepository.findById(empId).get());
         return true;
     }
-    //----------------------------------------------------------------------------
 
-    public boolean updateReturnExtraPayment(UUID uuid, Integer extraPay)
-    {
-        if (!returnRepository.findById(uuid).isPresent() || extraPay==null){
+    public boolean updateReturnExtraPayment(UUID uuid, Integer extraPay) {
+        if (!returnRepository.findById(uuid).isPresent() || extraPay == null) {
             throw new IllegalArgumentException("Wrong argument");
         }
         ReturnEntity newEntity = returnRepository.findById(uuid).get();

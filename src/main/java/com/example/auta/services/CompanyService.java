@@ -33,9 +33,9 @@ public class CompanyService {
 
     public Map<UUID, Company> getCompanies() {
 
-        Map<UUID,Company> map = new HashMap<>();
+        Map<UUID, Company> map = new HashMap<>();
         companyRepository.findAll().forEach(
-                element -> map.put(element.getId(),map(element)));
+                element -> map.put(element.getId(), map(element)));
         return map;
     }
 
@@ -44,33 +44,33 @@ public class CompanyService {
     }
 
     public boolean updateCompany(UUID uuid, Company company) {
-        try{
+        try {
             CompanyEntity updateCompanyEntity = companyRepository.findById(uuid).orElseThrow(EntityNotFoundException::new);
-            if (company.getName() != null){
+            if (company.getName() != null) {
                 updateCompanyEntity.setName(company.getName());
             }
-            if (company.getOwner() != null){
+            if (company.getOwner() != null) {
                 updateCompanyEntity.setOwner(company.getOwner());
             }
-            if (company.getAddress() != null){
+            if (company.getAddress() != null) {
                 updateCompanyEntity.setAddress(company.getAddress());
             }
-            if (company.getBranches() != null){
+            if (company.getBranches() != null) {
                 updateCompanyEntity.getBranches().clear();
                 updateCompanyEntity.getBranches().addAll(company.getBranches()
-                                                                 .stream()
-                                                                 .map(branchService::getOrCreateBranchEntity)
-                                                                 .collect(Collectors.toList()));
+                        .stream()
+                        .map(branchService::getOrCreateBranchEntity)
+                        .collect(Collectors.toList()));
             }
-            if (company.getDomain() != null){
+            if (company.getDomain() != null) {
                 updateCompanyEntity.setDomain(company.getDomain());
             }
-            if (company.getLogotype() != null){
+            if (company.getLogotype() != null) {
                 updateCompanyEntity.setLogotype(company.getLogotype());
             }
             companyRepository.save(updateCompanyEntity);
             return true;
-        } catch (EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             return false;
         }
 
@@ -84,7 +84,7 @@ public class CompanyService {
                 .findById(branchUUID)
                 .orElseThrow(Exception::new);
         company.getBranches().size();
-        if (company.getBranches().remove(branch)){
+        if (company.getBranches().remove(branch)) {
             companyRepository.save(company);
             return true;
         } else {
@@ -111,9 +111,9 @@ public class CompanyService {
                 .owner(c.getOwner())
                 .logotype(c.getLogotype())
                 .branches(c.getBranches()
-                                  .stream()
-                                  .map(branchService::getOrCreateBranchEntity)
-                                  .collect(Collectors.toSet()))
+                        .stream()
+                        .map(branchService::getOrCreateBranchEntity)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
@@ -125,9 +125,9 @@ public class CompanyService {
                 .owner(c.getOwner())
                 .logotype(c.getLogotype())
                 .branches(c.getBranches()
-                                  .stream()
-                                  .map(branchService::read)
-                                  .collect(Collectors.toList()))
+                        .stream()
+                        .map(branchService::read)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -141,17 +141,17 @@ public class CompanyService {
         return branchEntity.getId();
     }
 
-    public Map<UUID, Customer> getCustomers(UUID companyUUID){
+    public Map<UUID, Customer> getCustomers(UUID companyUUID) {
         CompanyEntity company = companyRepository
                 .findById(companyUUID)
                 .orElseThrow(EntityNotFoundException::new);
         Set<CustomerEntity> customers = customerRepository.findCustomerEntitiesByCompany(company);
         Map<UUID, Customer> customerMap = new HashMap<>();
-        customers.forEach(e->customerMap.put(e.getId(), customerService.readCustomer(e)));
+        customers.forEach(e -> customerMap.put(e.getId(), customerService.readCustomer(e)));
         return customerMap;
     }
 
-    public Map<UUID, Employee> getEmployees(UUID companyUUID){
+    public Map<UUID, Employee> getEmployees(UUID companyUUID) {
         CompanyEntity company = companyRepository
                 .findById(companyUUID)
                 .orElseThrow(EntityNotFoundException::new);
@@ -173,16 +173,16 @@ public class CompanyService {
             if (branch.getCars() != null) {
                 updateBranchEntity.getCars().clear();
                 updateBranchEntity.getCars().addAll(branch.getCars()
-                                                            .stream()
-                                                            .map(carService::getOrCreateCarEntity)
-                                                            .collect(Collectors.toSet()));
+                        .stream()
+                        .map(carService::getOrCreateCarEntity)
+                        .collect(Collectors.toSet()));
             }
             if (branch.getEmployees() != null) {
                 updateBranchEntity.getEmployees().clear();
                 updateBranchEntity.getEmployees().addAll(branch.getEmployees()
-                                                                 .stream()
-                                                                 .map(employeeService::getOrCreateEmployeeEntity)
-                                                                 .collect(Collectors.toSet()));
+                        .stream()
+                        .map(employeeService::getOrCreateEmployeeEntity)
+                        .collect(Collectors.toSet()));
             }
             branchRepository.save(updateBranchEntity);
             return true;
