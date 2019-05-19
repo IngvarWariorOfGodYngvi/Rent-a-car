@@ -127,8 +127,8 @@ public class CarService {
         return carEntity.orElse(carRepository.saveAndFlush(map(car)));
     }
 
-    public Car readCar(CarEntity car) {
-        return map(car);
+    public Car readCar(CarEntity car){
+        return Optional.ofNullable(car).map(this::map).orElse(null);
     }
 
 
