@@ -7,6 +7,7 @@ import com.example.auta.domain.repositories.EmployeeRepository;
 import com.example.auta.domain.repositories.RentRepository;
 import com.example.auta.domain.repositories.ReturnRepository;
 import com.example.auta.models.classes.Return;
+import com.example.auta.models.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class ReturnService {
         return true;
     }
 
-    public UUID addReturn(UUID employeeUUID, UUID rentUUID) {
+    public UUID addReturn(UUID employeeUUID, UUID rentUUID,Return returns) {
         EmployeeEntity employeeEntity = employeeRepository
                 .findById(employeeUUID)
                 .orElseThrow(EntityNotFoundException::new);
@@ -59,8 +60,10 @@ public class ReturnService {
                 .employee(employeeEntity)
                 .reservation(rentEntity.getReservation())
                 .rentalEndDate(LocalDate.now())
+                .endMileage(returns.getEndMileage())
                 .build();
-
+        rentEntity.getReservation().getCar().setMileage(returns.getEndMileage());
+        rentEntity.getReservation().setReservationStatus(ReservationStatus.RETURNED);
         return returnRepository.saveAndFlush(returnEntity).getId();
     }
 }
