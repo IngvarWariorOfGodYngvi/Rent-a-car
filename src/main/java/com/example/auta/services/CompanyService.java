@@ -24,6 +24,8 @@ public class CompanyService {
     private final BranchRepository branchRepository;
     private final BranchService branchService;
     private final CustomerRepository customerRepository;
+    private final CarService carService;
+    private final EmployeeService employeeService;
     private final CustomerService customerService;
 
     @Autowired
@@ -31,19 +33,23 @@ public class CompanyService {
                           BranchRepository branchRepo,
                           BranchService branchServ,
                           CustomerRepository customerRepo,
-                          CustomerService customerServ){
+                          CustomerService customerServ,
+                          CarService carService,
+                          EmployeeService employeeService) {
         this.companyRepository = companyRepo;
         this.branchRepository = branchRepo;
         this.branchService = branchServ;
         this.customerRepository = customerRepo;
         this.customerService = customerServ;
+        this.carService = carService;
+        this.employeeService = employeeService;
     }
 
     public Map<UUID, Company> getCompanies() {
 
-        Map<UUID,Company> map = new HashMap<>();
+        Map<UUID, Company> map = new HashMap<>();
         companyRepository.findAll().forEach(
-                element -> map.put(element.getId(),map(element)));
+                element -> map.put(element.getId(), map(element)));
         return map;
     }
 
@@ -51,34 +57,34 @@ public class CompanyService {
         return companyRepository.save(map(company)).getId();
     }
 
-    public boolean updateCompany(UUID uuid, Company company) {
-        try{
-            CompanyEntity updateCompanyEntity = companyRepository.findById(uuid).orElseThrow(EntityNotFoundException::new);
-            if (company.getName() != null){
+    public boolean updateCompany(UUID companyUUID, Company company) {
+        try {
+            CompanyEntity updateCompanyEntity = companyRepository.findById(companyUUID).orElseThrow(EntityNotFoundException::new);
+            if (company.getName() != null) {
                 updateCompanyEntity.setName(company.getName());
             }
-            if (company.getOwner() != null){
+            if (company.getOwner() != null) {
                 updateCompanyEntity.setOwner(company.getOwner());
             }
-            if (company.getAddress() != null){
+            if (company.getAddress() != null) {
                 updateCompanyEntity.setAddress(company.getAddress());
             }
-            if (company.getBranches() != null){
+            if (company.getBranches() != null) {
                 updateCompanyEntity.getBranches().clear();
                 updateCompanyEntity.getBranches().addAll(company.getBranches()
-                                                                 .stream()
-                                                                 .map(branchService::getOrCreateBranchEntity)
-                                                                 .collect(Collectors.toList()));
+                        .stream()
+                        .map(branchService::getOrCreateBranchEntity)
+                        .collect(Collectors.toList()));
             }
-            if (company.getDomain() != null){
+            if (company.getDomain() != null) {
                 updateCompanyEntity.setDomain(company.getDomain());
             }
-            if (company.getLogotype() != null){
+            if (company.getLogotype() != null) {
                 updateCompanyEntity.setLogotype(company.getLogotype());
             }
             companyRepository.save(updateCompanyEntity);
             return true;
-        } catch (EntityNotFoundException ex){
+        } catch (EntityNotFoundException ex) {
             return false;
         }
 
@@ -92,7 +98,7 @@ public class CompanyService {
                 .findById(branchUUID)
                 .orElseThrow(Exception::new);
         company.getBranches().size();
-        if (company.getBranches().remove(branch)){
+        if (company.getBranches().remove(branch)) {
             companyRepository.save(company);
             return true;
         } else {
@@ -147,6 +153,36 @@ public class CompanyService {
         company.getBranches().add(branchEntity);
         companyRepository.saveAndFlush(company);
         return branchEntity.getId();
+    }
+
+    public boolean updateBranch(UUID branchUUID, Branch branch) {
+        try {
+            BranchEntity updateBranchEntity = branchRepository
+                    .findById(branchUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            if (branch.getAddress() != null) {
+                updateBranchEntity.setAddress(branch.getAddress());
+            }
+            if (branch.getCars() != null) {
+                updateBranchEntity.getCars().clear();
+                updateBranchEntity.getCars().addAll(branch.getCars()
+                        .stream()
+                        .map(carService::getOrCreateCarEntity)
+                        .collect(Collectors.toSet()));
+            }
+            if (branch.getEmployees() != null) {
+                updateBranchEntity.getEmployees().clear();
+                updateBranchEntity.getEmployees().addAll(branch.getEmployees()
+                        .stream()
+                        .map(employeeService::getOrCreateEmployeeEntity)
+                        .collect(Collectors.toSet()));
+            }
+            branchRepository.save(updateBranchEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
+            return false;
+        }
+
     }
 
     public Map<UUID, Customer> getCustomers(UUID companyUUID){

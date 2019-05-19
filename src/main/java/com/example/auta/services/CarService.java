@@ -58,15 +58,19 @@ public class CarService {
                 element -> map.put(element.getId(), map(element)));
         return map;
     }
+    //----------------------------------------------------------------------------
 
     public boolean updateCarStatus(UUID uuid) {
         return false;
     }
+    //----------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------
 
     public boolean updateCarMileage(UUID carUuid) {
-
         return false;
     }
+    //----------------------------------------------------------------------------
 
     public CarEntity saveCar(Car car){
         return carRepository.saveAndFlush(map(car));

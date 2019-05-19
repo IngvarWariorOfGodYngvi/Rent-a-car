@@ -40,7 +40,7 @@ public class EmployeeService {
             return false;
         }
     }
-
+    //----------------------------------------------------------------------------
     public boolean editEmployee(UUID id, Employee employee) {
 
         if(!employeeRepository.findById(id).isPresent() || employee == null){
@@ -52,7 +52,7 @@ public class EmployeeService {
         newEntity.setPosition(employee.getPosition());
         return true;
     }
-
+    //----------------------------------------------------------------------------
     public EmployeeEntity getOrCreateEmployeeEntity(Employee employee){
         Optional<EmployeeEntity> employeeEntity = employeeRepository
                 .findEmployeeEntityByForenameEqualsAndSurnameEquals(employee.getForename(),

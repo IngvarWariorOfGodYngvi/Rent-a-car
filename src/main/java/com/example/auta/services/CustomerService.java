@@ -42,6 +42,7 @@ public class CustomerService {
             return false;
         }
     }
+    //----------------------------------------------------------------------------
 
     public boolean editCustomer(UUID id, Customer customer) {
         if (!customerRepository.findById(id).isPresent() || customer == null) {
@@ -54,6 +55,7 @@ public class CustomerService {
         newEntity.setLastname(customer.getSurname());
         return true;
     }
+    //----------------------------------------------------------------------------
 
     private Customer map(CustomerEntity source) {
 
