@@ -30,7 +30,7 @@ public class ReturnController {
         return returnService.updateReturnExtraPayment(uuid,extraPay);
     }
     @GetMapping("/add")
-    public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID, @RequestParam("rentUUID")UUID rentUUID){
-        return returnService.addReturn(employeeUUID,rentUUID);
+    public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID, @RequestParam("rentUUID")UUID rentUUID,Return returns){
+        return returnService.addReturn(employeeUUID,rentUUID,returns);
     }
 }
