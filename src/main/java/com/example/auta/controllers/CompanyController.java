@@ -22,6 +22,12 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+    //          C   O   M   P   A   N   Y
+    @GetMapping("/list")
+    public Map<UUID, Company> listCompanies() {
+        return companyService.getCompanies();
+    }
+
     @PostMapping("/add")
     public UUID addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
@@ -33,26 +39,28 @@ public class CompanyController {
         return companyService.updateCompany(companyUUID, company);
     }
 
-    @GetMapping("/list")
-    public Map<UUID, Company> listCompanies(){
-        return companyService.getCompanies();
+    @DeleteMapping("/{uuid}/delete")
+    public boolean deleteCompany(@PathVariable UUID uuid) {
+        return companyService.deleteCompany(uuid);
     }
 
-    @DeleteMapping("{companyUUID}/deletebranch/{branchUUID}")
-    public boolean deleteBranch(@PathVariable UUID companyUUID,
-                                @PathVariable UUID branchUUID) throws Exception {
-        return companyService.deleteBranch(companyUUID,branchUUID);
-    }
-
+    //          B   R   A   N   C   H
     @PostMapping("{companyUUID}/addbranch")
     public UUID addBranch(@PathVariable UUID companyUUID,
                           @RequestBody Branch branch) throws EntityNotFoundException {
         return companyService.addBranch(companyUUID, branch);
     }
 
-    @DeleteMapping("/{uuid}/delete")
-    public boolean deleteCompany(@PathVariable UUID uuid) {
-        return companyService.deleteCompany(uuid);
+    @PostMapping("/{branchUUID}/updatebranch}")
+    public boolean updateBranch(@PathVariable UUID branchUUID,
+                                @RequestBody Branch branch) {
+        return companyService.updateBranch(branchUUID, branch);
+    }
+
+    @DeleteMapping("{companyUUID}/deletebranch/{branchUUID}")
+    public boolean deleteBranch(@PathVariable UUID companyUUID,
+                                @PathVariable UUID branchUUID) throws Exception {
+        return companyService.deleteBranch(companyUUID, branchUUID);
     }
 
     @GetMapping("/{companyUUID}/customerlist")

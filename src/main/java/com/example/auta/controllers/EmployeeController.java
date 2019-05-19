@@ -22,8 +22,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public UUID addEmployee (@Valid @RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public UUID addEmployee(@RequestParam("branchUUID") UUID branchUUID,
+                            @Valid @RequestBody Employee employee) {
+        return employeeService.addEmployee(branchUUID, employee);
     }
 
     @DeleteMapping("/{employeeUUID}/remove")
@@ -31,12 +32,9 @@ public class EmployeeController {
         return employeeService.removeEmployee(employeeUUID);
     }
 
-    @PutMapping("/{employeeUUID}/edit")
-    public boolean edit(@RequestBody Employee employee, @PathVariable UUID employeeUUID){
-        try {
-            return employeeService.editEmployee(employeeUUID,employee);
-        }catch (Exception ex){
-            return false;
-        }
+    @PutMapping("/{employeeUUID}/update")
+    public boolean updateEmployee(@RequestBody Employee employee, @PathVariable UUID employeeUUID) {
+        return employeeService.updateEmployee(employeeUUID, employee);
+
     }
 }

@@ -10,6 +10,7 @@ import com.example.auta.models.classes.Branch;
 import com.example.auta.models.classes.Company;
 import com.example.auta.models.classes.Customer;
 import com.example.auta.models.classes.Employee;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
@@ -25,19 +27,9 @@ public class CompanyService {
     private final BranchService branchService;
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
+    private final CarService carService;
+    private final EmployeeService employeeService;
 
-    @Autowired
-    public CompanyService(CompanyRepository companyRepo,
-                          BranchRepository branchRepo,
-                          BranchService branchServ,
-                          CustomerRepository customerRepo,
-                          CustomerService customerServ){
-        this.companyRepository = companyRepo;
-        this.branchRepository = branchRepo;
-        this.branchService = branchServ;
-        this.customerRepository = customerRepo;
-        this.customerService = customerServ;
-    }
 
     public Map<UUID, Company> getCompanies() {
 
@@ -168,5 +160,35 @@ public class CompanyService {
                 .flatMap(e -> e.entrySet().stream())
                 .distinct()
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public boolean updateBranch(UUID branchUUID, Branch branch) {
+        try {
+            BranchEntity updateBranchEntity = branchRepository
+                    .findById(branchUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            if (branch.getAddress() != null) {
+                updateBranchEntity.setAddress(branch.getAddress());
+            }
+            if (branch.getCars() != null) {
+                updateBranchEntity.getCars().clear();
+                updateBranchEntity.getCars().addAll(branch.getCars()
+                                                            .stream()
+                                                            .map(carService::getOrCreateCarEntity)
+                                                            .collect(Collectors.toSet()));
+            }
+            if (branch.getEmployees() != null) {
+                updateBranchEntity.getEmployees().clear();
+                updateBranchEntity.getEmployees().addAll(branch.getEmployees()
+                                                                 .stream()
+                                                                 .map(employeeService::getOrCreateEmployeeEntity)
+                                                                 .collect(Collectors.toSet()));
+            }
+            branchRepository.save(updateBranchEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
+            return false;
+        }
+
     }
 }

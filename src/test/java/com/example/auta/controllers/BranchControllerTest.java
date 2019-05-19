@@ -90,7 +90,7 @@ public class BranchControllerTest {
     }
 
     @Test
-    public void getEmployee() {
+    public void getEmployees() {
         EmployeeEntity employee1 = EmployeeEntity.builder().surname("Kwiatkowski").branch(branchEntity).build();
         EmployeeEntity employee2 = EmployeeEntity.builder().surname("Zielinski").branch(branchEntity).build();
         Arrays.asList(employee1, employee2).forEach(employeeRepository::saveAndFlush);

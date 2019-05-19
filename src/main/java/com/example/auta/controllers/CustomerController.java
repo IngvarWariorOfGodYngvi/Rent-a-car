@@ -34,7 +34,7 @@ public class CustomerController {
     @PutMapping("/{customerUUID}/edit")
     public boolean edit(@RequestBody Customer customer, @PathVariable UUID customerUUID) {
         try {
-            return customerService.editCustomer(customerUUID, customer);
+            return customerService.updateCustomer(customerUUID, customer);
         } catch (Exception ex) {
             return false;
         }
