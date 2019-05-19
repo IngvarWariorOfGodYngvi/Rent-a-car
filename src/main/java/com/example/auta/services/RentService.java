@@ -20,20 +20,19 @@ public class RentService {
     public Map<UUID, Rent> getRents() {
         return null;
     }
-    //----------------------------------------------------------------------------
-    public boolean updateRentComment(UUID uuid,String comment) {
 
-        if (!rentRepository.findById(uuid).isPresent() || comment ==null){
+    public boolean updateRentComment(UUID uuid, String comment) {
+
+        if (!rentRepository.findById(uuid).isPresent() || comment == null) {
             throw new IllegalArgumentException("Wrong argument");
         }
         RentEntity newEntity = rentRepository.findById(uuid).get();
         newEntity.setComment(comment);
         return true;
     }
-    //----------------------------------------------------------------------------
 
     public boolean updateRentEmployee(UUID uuid, UUID empId) {
-        if (!rentRepository.findById(uuid).isPresent() || !employeeRepository.findById(empId).isPresent()){
+        if (!rentRepository.findById(uuid).isPresent() || !employeeRepository.findById(empId).isPresent()) {
             throw new IllegalArgumentException("Wrong argument");
         }
         RentEntity newEntity = rentRepository.findById(uuid).get();

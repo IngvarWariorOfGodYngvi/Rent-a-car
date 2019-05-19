@@ -4,6 +4,7 @@ import com.example.auta.domain.entities.CustomerEntity;
 import com.example.auta.domain.entities.ReservationEntity;
 import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
+import com.example.auta.models.classes.Customer;
 import com.example.auta.models.classes.Reservation;
 import com.example.auta.models.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,13 @@ public class ReservationService {
     private final CarService carService;
     private final BranchService branchService;
 
-    public UUID addReservation(Reservation reservation) {
-        return reservationRepository.save(map(reservation)).getId();
+    public UUID addReservation(UUID customerUUID, Reservation reservation) {
+        CustomerEntity customerEntity = customerRepository
+                .findById(customerUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        Customer customer = customerService.readCustomer(customerEntity);
+        reservation.setCustomer(customer);
+        return reservationRepository.saveAndFlush(map(reservation)).getId();
     }
 
     public boolean removeReservation(UUID reservationUUID) throws EntityNotFoundException {
@@ -111,7 +117,7 @@ public class ReservationService {
             if (reservation.getReturnBranch() != null) {
                 updateReservationEntity.setReturnBranch(branchService.getOrCreateBranchEntity(reservation.getRentalBranch()));
             }
-            reservationRepository.save(updateReservationEntity);
+            reservationRepository.saveAndFlush(updateReservationEntity);
             return true;
         } catch (EntityNotFoundException ex) {
             return false;
@@ -120,13 +126,14 @@ public class ReservationService {
 
 
     public boolean cancelReservation(UUID reservationUUID) {
-        try{ReservationEntity reservationEntity = reservationRepository
-                .findById(reservationUUID)
-                .orElseThrow(EntityNotFoundException::new);
-        reservationEntity.setReservationStatus(ReservationStatus.CANCELED);
-        reservationRepository.save(reservationEntity);
-        return true;
-    }catch (EntityNotFoundException ex){
+        try {
+            ReservationEntity reservationEntity = reservationRepository
+                    .findById(reservationUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            reservationEntity.setReservationStatus(ReservationStatus.CANCELED);
+            reservationRepository.saveAndFlush(reservationEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
             return false;
         }
     }

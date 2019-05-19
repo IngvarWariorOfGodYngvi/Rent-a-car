@@ -15,8 +15,8 @@ public class ReservationController {
     public ReservationService reservationService;
 
     @PostMapping("/add")
-    public UUID addReservation(@RequestBody Reservation reservation) {
-        return reservationService.addReservation(reservation);
+    public UUID addReservation(@RequestBody Reservation reservation,@RequestParam("customerUUID")UUID customerUUID) {
+        return reservationService.addReservation(customerUUID,reservation);
     }
 
     @DeleteMapping("/{reservationUUID}/remove")
