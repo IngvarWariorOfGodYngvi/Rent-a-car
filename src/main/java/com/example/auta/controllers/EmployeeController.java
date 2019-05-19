@@ -22,8 +22,8 @@ public class EmployeeController {
     }
 
     @PostMapping("{branchUUID}/add")
-    public UUID addEmployee (@PathVariable UUID branchUUID, @Valid @RequestBody Employee employee) {
-        return employeeService.addEmployee(branchUUID,employee);
+    public UUID addEmployee(@PathVariable UUID branchUUID, @Valid @RequestBody Employee employee) {
+        return employeeService.addEmployee(branchUUID, employee);
     }
 
     @DeleteMapping("/{employeeUUID}/remove")
@@ -32,8 +32,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeUUID}/update")
-    public boolean updateEmployee(@RequestBody Employee employee, @PathVariable UUID employeeUUID){
-            return employeeService.updateEmployee(employeeUUID,employee);
+    public boolean updateEmployee(@RequestBody Employee employee, @PathVariable UUID employeeUUID) {
+        return employeeService.updateEmployee(employeeUUID, employee);
 
     }
 }

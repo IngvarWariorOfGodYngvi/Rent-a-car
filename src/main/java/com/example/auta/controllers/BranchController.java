@@ -38,5 +38,10 @@ public class BranchController {
     @GetMapping("/{branchUUID}/employees")
     public Map<UUID, Employee> getEmployees(@PathVariable UUID branchUUID) {return branchService.getEmployees(branchUUID);}
 
+    @GetMapping("{branchUUID}/carlist")
+    public Map<UUID, Car> getCars(@PathVariable UUID branchUUID){
+        return branchService.getCars(branchUUID);
+    }
+
 
 }
