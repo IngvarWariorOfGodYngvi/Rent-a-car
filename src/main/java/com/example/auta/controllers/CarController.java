@@ -17,7 +17,7 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Map<UUID, Car> getCars() {
         return carService.getCars();
     }
