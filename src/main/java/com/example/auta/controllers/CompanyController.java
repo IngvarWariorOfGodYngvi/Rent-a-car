@@ -63,10 +63,10 @@ public class CompanyController {
         return companyService.deleteBranch(companyUUID, branchUUID);
     }
 
-    @GetMapping("/{companyUUID}/customerlist")
+    @GetMapping("/{companyUUID}/customers")
     public Map<UUID, Customer> getCustomers(@PathVariable UUID companyUUID){return companyService.getCustomers(companyUUID);}
 
-    @GetMapping("/{companyUUID}/employeelist")
+    @GetMapping("/{companyUUID}/employees")
     public Map<UUID, Employee> getEmployees(@PathVariable UUID companyUUID){
         return companyService.getEmployees(companyUUID);
     }
