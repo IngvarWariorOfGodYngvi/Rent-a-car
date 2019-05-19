@@ -5,6 +5,7 @@ import com.example.auta.domain.entities.ReservationEntity;
 import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
 import com.example.auta.models.classes.Reservation;
+import com.example.auta.models.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,8 @@ public class ReservationService {
         return !reservationRepository.findById(reservationUUID).isPresent();
 
     }
-    //----------------------------------------------------------------------------
-    public boolean updateReservation() {
-        return false;
-    }
-    //----------------------------------------------------------------------------
 
-    public Reservation read(ReservationEntity reservation){
+    public Reservation read(ReservationEntity reservation) {
         return map(reservation);
     }
 
@@ -59,7 +55,7 @@ public class ReservationService {
                 .orElseThrow(EntityNotFoundException::new);
         Set<ReservationEntity> reservationEntities = reservationRepository.findAllByCustomer(customer);
         Map<UUID, Reservation> reservations = new HashMap<>();
-        reservationEntities.forEach(e->reservations.put(e.getId(), read(e)));
+        reservationEntities.forEach(e -> reservations.put(e.getId(), read(e)));
         return reservations;
     }
 
@@ -94,4 +90,45 @@ public class ReservationService {
                 .reservationStatus(source.getReservationStatus())
                 .build();
     }
+
+    public boolean updateReservation(UUID reservationUUID, Reservation reservation) {
+        try {
+            ReservationEntity updateReservationEntity = reservationRepository
+                    .findById(reservationUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            if (reservation.getCar() != null) {
+                updateReservationEntity.setCar(carService.getOrCreateCarEntity(reservation.getCar()));
+            }
+            if (reservation.getRentalStartDate() != null) {
+                updateReservationEntity.setRentalStartDate(reservation.getRentalStartDate());
+            }
+            if (reservation.getRentalEndDate() != null) {
+                updateReservationEntity.setRentalEndDate(reservation.getRentalEndDate());
+            }
+            if (reservation.getRentalBranch() != null) {
+                updateReservationEntity.setRentalBranch(branchService.getOrCreateBranchEntity(reservation.getRentalBranch()));
+            }
+            if (reservation.getReturnBranch() != null) {
+                updateReservationEntity.setReturnBranch(branchService.getOrCreateBranchEntity(reservation.getRentalBranch()));
+            }
+            reservationRepository.save(updateReservationEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
+            return false;
+        }
+    }
+
+
+    public boolean cancelReservation(UUID reservationUUID) {
+        try{ReservationEntity reservationEntity = reservationRepository
+                .findById(reservationUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        reservationEntity.setReservationStatus(ReservationStatus.CANCELED);
+        reservationRepository.save(reservationEntity);
+        return true;
+    }catch (EntityNotFoundException ex){
+            return false;
+        }
+    }
+
 }

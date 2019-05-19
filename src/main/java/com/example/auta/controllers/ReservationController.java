@@ -26,7 +26,12 @@ public class ReservationController {
 
     @PostMapping("/{reservationUUID}/update")
     public boolean updateReservation(@PathVariable UUID reservationUUID, Reservation reservation){
-        return reservationService.updateReservation();
+        return reservationService.updateReservation(reservationUUID,reservation);
+    }
+
+    @PostMapping("/reservationUUID/cancel")
+    public boolean cancelReservation(@PathVariable UUID reservationUUID){
+        return reservationService.cancelReservation(reservationUUID);
     }
 
 

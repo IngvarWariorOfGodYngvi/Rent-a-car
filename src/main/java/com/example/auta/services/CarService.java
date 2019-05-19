@@ -66,7 +66,7 @@ public class CarService {
                     .findById(carUUID)
                     .orElseThrow(EntityNotFoundException::new);
             if (car.getCarStatus() != null) {
-                car.setCarStatus(car.getCarStatus());
+                updateCarEntity.setCarStatus(car.getCarStatus());
             }
             carRepository.save(updateCarEntity);
             return true;
