@@ -38,7 +38,7 @@ public class BranchService {
     }
 
     public Branch read(BranchEntity branch) {
-        return map(branch);
+        return Optional.ofNullable(branch).map(this::map).orElse(null);
     }
 
     private BranchEntity map(Branch branch) {
