@@ -29,4 +29,8 @@ public class ReturnController {
     public boolean updateReturnExtraPayment(@PathVariable UUID uuid, @RequestBody Integer extraPay){
         return returnService.updateReturnExtraPayment(uuid,extraPay);
     }
+    @GetMapping("/add")
+    public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID, @RequestParam("rentUUID")UUID rentUUID){
+        return returnService.addReturn(employeeUUID,rentUUID);
+    }
 }
