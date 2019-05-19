@@ -35,11 +35,12 @@ public class BranchController {
         return carService.deleteCar(branchUUID, carUUID);
     }
 
-    @GetMapping("/{branchUUID}/employees")
-    public Map<UUID, Employee> getEmployees(@PathVariable UUID branchUUID) {return branchService.getEmployees(branchUUID);}
-
+    @GetMapping("/{branchUUID}/employeelist")
+    public Map<UUID, Employee> getEmployee(@PathVariable UUID branchUUID) {
+        return branchService.getEmployees(branchUUID);
+    }
     @GetMapping("{branchUUID}/carlist")
-    public Map<UUID, Car> getCars(@PathVariable UUID branchUUID){
+    public Map<UUID, Car> getCars(@PathVariable UUID branchUUID) {
         return branchService.getCars(branchUUID);
     }
 
