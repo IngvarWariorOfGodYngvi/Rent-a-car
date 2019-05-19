@@ -59,7 +59,7 @@ public class RentService {
     }
 
     private RentEntity map(Rent rent) {
-       return RentEntity.builder()
+        return RentEntity.builder()
                 .employee(employeeService.getOrCreateEmployeeEntity(rent.getEmployee()))
                 .rentalStart(rent.getRentalStart())
                 .reservation(reservationService.getOrCreateReservationEntity(rent.getReservation()))
@@ -68,8 +68,4 @@ public class RentService {
 
     }
 
-    private Employee employee;
-    private LocalDate rentalStart;
-    private Reservation reservation;
-    private String comment;
 }

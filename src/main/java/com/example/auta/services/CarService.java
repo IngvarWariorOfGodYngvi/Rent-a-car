@@ -75,8 +75,6 @@ public class CarService {
         }
     }
 
-    //----------------------------------------------------------------------------
-
     public boolean updateCarMileage(UUID carUUID, Car car) {
         try {
             CarEntity updateCarEntity = carRepository
@@ -91,7 +89,6 @@ public class CarService {
             return false;
         }
     }
-    //----------------------------------------------------------------------------
 
     public CarEntity saveCar(Car car) {
         return carRepository.saveAndFlush(map(car));

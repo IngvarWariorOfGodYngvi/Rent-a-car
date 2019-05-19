@@ -49,19 +49,6 @@ public class EmployeeService {
         }
     }
 
-    //----------------------------------------------------------------------------
-    public boolean editEmployee(UUID id, Employee employee) {
-
-        if (!employeeRepository.findById(id).isPresent() || employee == null) {
-            throw new IllegalArgumentException("Wrong argument");
-        }
-        EmployeeEntity newEntity = employeeRepository.findById(id).get();
-        newEntity.setForename(employee.getForename());
-        newEntity.setSurname(employee.getSurname());
-        newEntity.setPosition(employee.getPosition());
-        return true;
-    }
-
     public boolean updateEmployee(UUID employeeUUID, Employee employee) {
         try {
             EmployeeEntity updateEmployeeEntity = employeeRepository
