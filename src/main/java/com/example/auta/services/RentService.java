@@ -20,7 +20,7 @@ public class RentService {
     public Map<UUID, Rent> getRents() {
         return null;
     }
-
+    //----------------------------------------------------------------------------
     public boolean updateRentComment(UUID uuid,String comment) {
 
         if (!rentRepository.findById(uuid).isPresent() || comment ==null){
@@ -30,6 +30,7 @@ public class RentService {
         newEntity.setComment(comment);
         return true;
     }
+    //----------------------------------------------------------------------------
 
     public boolean updateRentEmployee(UUID uuid, UUID empId) {
         if (!rentRepository.findById(uuid).isPresent() || !employeeRepository.findById(empId).isPresent()){

@@ -1,6 +1,5 @@
 package com.example.auta.services;
 
-import com.example.auta.domain.entities.CustomerEntity;
 import com.example.auta.domain.entities.ReservationEntity;
 import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
@@ -28,13 +27,19 @@ public class ReservationService {
         return reservationRepository.save(map(reservation)).getId();
     }
 
-    public boolean removeReservation(UUID reservationUUID) {
-        return false;
-    }
+    public boolean removeReservation(UUID reservationUUID) throws EntityNotFoundException {
+        ReservationEntity reservation = reservationRepository
+                .findById(reservationUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        reservationRepository.delete(reservation);
+        return !reservationRepository.findById(reservationUUID).isPresent();
 
+    }
+    //----------------------------------------------------------------------------
     public boolean updateReservation() {
         return false;
     }
+    //----------------------------------------------------------------------------
 
     public Reservation read(ReservationEntity reservation){
         return map(reservation);

@@ -10,6 +10,7 @@ import com.example.auta.models.classes.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -59,16 +60,40 @@ public class CarService {
         return map;
     }
 
-    public boolean updateCarStatus(UUID uuid) {
-        return false;
+    public boolean updateCarStatus(UUID carUUID, Car car) {
+        try {
+            CarEntity updateCarEntity = carRepository
+                    .findById(carUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            if (car.getCarStatus() != null) {
+                car.setCarStatus(car.getCarStatus());
+            }
+            carRepository.save(updateCarEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
+            return false;
+        }
     }
 
-    public boolean updateCarMileage(UUID carUuid) {
+    //----------------------------------------------------------------------------
 
-        return false;
+    public boolean updateCarMileage(UUID carUUID, Car car) {
+        try {
+            CarEntity updateCarEntity = carRepository
+                    .findById(carUUID)
+                    .orElseThrow(EntityNotFoundException::new);
+            if (car.getMileage() != null) {
+                car.setMileage(car.getMileage());
+            }
+            carRepository.save(updateCarEntity);
+            return true;
+        } catch (EntityNotFoundException ex) {
+            return false;
+        }
     }
+    //----------------------------------------------------------------------------
 
-    public CarEntity saveCar(Car car){
+    public CarEntity saveCar(Car car) {
         return carRepository.saveAndFlush(map(car));
     }
 
@@ -99,13 +124,13 @@ public class CarService {
                 .build();
     }
 
-    public CarEntity getOrCreateCarEntity(Car car){
+    public CarEntity getOrCreateCarEntity(Car car) {
         Optional<CarEntity> carEntity = carRepository
                 .findCarEntityByLicensePlateEquals(car.getLicensePlate());
         return carEntity.orElse(carRepository.saveAndFlush(map(car)));
     }
 
-    public Car readCar(CarEntity car){
+    public Car readCar(CarEntity car) {
         return map(car);
     }
 

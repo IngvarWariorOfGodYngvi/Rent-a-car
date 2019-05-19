@@ -18,15 +18,18 @@ public class CarController {
     private CarService carService;
 
     @PostMapping("/list")
-    public Map<UUID, Car> getCars(){ return carService.getCars();}
+    public Map<UUID, Car> getCars() {
+        return carService.getCars();
+    }
 
     @PostMapping("/{carUUID}/updatestatus")
-    public boolean updateCarStatus(@PathVariable UUID carUUID) {
-        return carService.updateCarStatus(carUUID);
+    public boolean updateCarStatus(@PathVariable UUID carUUID, @RequestBody Car car) {
+        return carService.updateCarStatus(carUUID, car);
     }
+
     @PostMapping("/{carUUID}/updatemileage")
-    public boolean updateCarMileage(@PathVariable UUID carUUID){
-        return carService.updateCarMileage(carUUID);
+    public boolean updateCarMileage(@PathVariable UUID carUUID, @RequestBody Car car) {
+        return carService.updateCarMileage(carUUID, car);
     }
 
 }

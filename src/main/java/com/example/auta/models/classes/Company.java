@@ -22,5 +22,7 @@ public class Company {
     private byte[] logotype;
     @Builder.Default
     private List<Branch> branches = new ArrayList<>();
+    @Builder.Default
+    private List<Customer> customers = new ArrayList<>();
 
 }
