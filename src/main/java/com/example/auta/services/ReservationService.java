@@ -1,5 +1,6 @@
 package com.example.auta.services;
 
+import com.example.auta.domain.entities.CustomerEntity;
 import com.example.auta.domain.entities.ReservationEntity;
 import com.example.auta.domain.repositories.CustomerRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
