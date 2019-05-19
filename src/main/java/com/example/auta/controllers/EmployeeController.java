@@ -16,11 +16,6 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/list")
-    public Map<UUID, Employee> employees() {
-        return employeeService.getEmployees();
-    }
-
     @PostMapping("/add")
     public UUID addEmployee(@RequestParam("branchUUID") UUID branchUUID,
                             @Valid @RequestBody Employee employee) {
@@ -33,8 +28,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeUUID}/update")
-    public boolean updateEmployee(@RequestBody Employee employee, @PathVariable UUID employeeUUID) {
+    public boolean updateEmployee(@RequestBody Employee employee,
+                                  @PathVariable UUID employeeUUID) {
         return employeeService.updateEmployee(employeeUUID, employee);
-
     }
 }

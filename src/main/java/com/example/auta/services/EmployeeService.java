@@ -22,14 +22,6 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final BranchRepository branchRepository;
 
-    public Map<UUID, Employee> getEmployees() {
-
-        Map<UUID, Employee> map = new HashMap<>();
-        employeeRepository.findAll().forEach(
-                element -> map.put(element.getId(), map(element)));
-        return map;
-    }
-
     public UUID addEmployee(UUID branchUUID, Employee employee) {
         BranchEntity branch = branchRepository
                 .findById(branchUUID)
@@ -49,19 +41,6 @@ public class EmployeeService {
         }
     }
 
-    //----------------------------------------------------------------------------
-    public boolean editEmployee(UUID id, Employee employee) {
-
-        if (!employeeRepository.findById(id).isPresent() || employee == null) {
-            throw new IllegalArgumentException("Wrong argument");
-        }
-        EmployeeEntity newEntity = employeeRepository.findById(id).get();
-        newEntity.setForename(employee.getForename());
-        newEntity.setSurname(employee.getSurname());
-        newEntity.setPosition(employee.getPosition());
-        return true;
-    }
-
     public boolean updateEmployee(UUID employeeUUID, Employee employee) {
         try {
             EmployeeEntity updateEmployeeEntity = employeeRepository
@@ -76,7 +55,7 @@ public class EmployeeService {
             if (employee.getPosition() != null) {
                 updateEmployeeEntity.setPosition(employee.getPosition());
             }
-            employeeRepository.save(updateEmployeeEntity);
+            employeeRepository.saveAndFlush(updateEmployeeEntity);
             return true;
         } catch (EntityNotFoundException ex) {
             return false;
@@ -84,7 +63,6 @@ public class EmployeeService {
 
     }
 
-    //----------------------------------------------------------------------------
     public EmployeeEntity getOrCreateEmployeeEntity(Employee employee) {
         Optional<EmployeeEntity> employeeEntity = employeeRepository
                 .findEmployeeEntityByForenameEqualsAndSurnameEquals(employee.getForename(),

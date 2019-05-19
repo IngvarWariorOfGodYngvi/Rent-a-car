@@ -22,7 +22,7 @@ public class CustomerController {
     private final ReservationService reservationService;
 
     @PostMapping("/add")
-    public UUID add(@RequestBody Customer customer) {
+    public UUID addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
