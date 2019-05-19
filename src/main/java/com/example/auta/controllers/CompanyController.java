@@ -51,7 +51,7 @@ public class CompanyController {
         return companyService.addBranch(companyUUID, branch);
     }
 
-    @PostMapping("/{branchUUID}/updatebranch}")
+    @PostMapping("/{branchUUID}/updatebranch")
     public boolean updateBranch(@PathVariable UUID branchUUID,
                                 @RequestBody Branch branch) {
         return companyService.updateBranch(branchUUID, branch);
