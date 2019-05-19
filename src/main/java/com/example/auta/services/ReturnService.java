@@ -1,13 +1,19 @@
 package com.example.auta.services;
 
+import com.example.auta.domain.entities.EmployeeEntity;
+import com.example.auta.domain.entities.RentEntity;
 import com.example.auta.domain.entities.ReturnEntity;
 import com.example.auta.domain.repositories.EmployeeRepository;
+import com.example.auta.domain.repositories.RentRepository;
 import com.example.auta.domain.repositories.ReturnRepository;
 import com.example.auta.models.classes.Return;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,6 +23,7 @@ public class ReturnService {
 
     private final ReturnRepository returnRepository;
     private final EmployeeRepository employeeRepository;
+    private final RentRepository rentRepository;
 
     public Map<UUID, Return> getReturns() {
         return null;
@@ -39,5 +46,21 @@ public class ReturnService {
         ReturnEntity newEntity = returnRepository.findById(uuid).get();
         newEntity.setExtraPayment(new BigDecimal(extraPay));
         return true;
+    }
+
+    public UUID addReturn(UUID employeeUUID, UUID rentUUID) {
+        EmployeeEntity employeeEntity = employeeRepository
+                .findById(employeeUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        RentEntity rentEntity = rentRepository
+                .findById(rentUUID)
+                .orElseThrow(EntityNotFoundException::new);
+        ReturnEntity returnEntity =  ReturnEntity.builder()
+                .employee(employeeEntity)
+                .reservation(rentEntity.getReservation())
+                .rentalEndDate(LocalDate.now())
+                .build();
+
+        return returnRepository.saveAndFlush(returnEntity).getId();
     }
 }
