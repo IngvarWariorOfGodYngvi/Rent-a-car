@@ -25,17 +25,14 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{customerUUID}/remove")
-    public boolean remove(@PathVariable UUID customerUUID) {
+    public boolean removeCustomer(@PathVariable UUID customerUUID) {
         return customerService.removeCustomer(customerUUID);
     }
 
-    @PutMapping("/{customerUUID}/edit")
-    public boolean edit(@RequestBody Customer customer, @PathVariable UUID customerUUID) {
-        try {
-            return customerService.updateCustomer(customerUUID, customer);
-        } catch (Exception ex) {
-            return false;
-        }
+    @PutMapping("/{customerUUID}/update")
+    public boolean updateCustomer(@RequestBody Customer customer,
+                                  @PathVariable UUID customerUUID) {
+        return customerService.updateCustomer(customerUUID, customer);
     }
 
     @GetMapping("/{customerUUID}/reservations")
