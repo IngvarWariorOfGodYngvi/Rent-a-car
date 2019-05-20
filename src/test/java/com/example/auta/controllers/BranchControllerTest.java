@@ -92,9 +92,10 @@ public class BranchControllerTest {
 
     @Test
     public void getEmployees() {
-        EmployeeEntity employee1 = EmployeeEntity.builder().surname("Kwiatkowski").branch(branchEntity).build();
-        EmployeeEntity employee2 = EmployeeEntity.builder().surname("Zielinski").branch(branchEntity).build();
-        Arrays.asList(employee1, employee2).forEach(employeeRepository::saveAndFlush);
+        List<EmployeeEntity> employeess = Arrays.asList(
+                EmployeeEntity.builder().surname("Kwiatkowski").branch(branchEntity).build(),
+                EmployeeEntity.builder().surname("Zielinski").branch(branchEntity).build());
+        employeess.forEach(employeeRepository::saveAndFlush);
         ResponseEntity<Map<UUID, Employee>> re = testRestTemplate
                 .exchange(String.format("/branch/%s/employees", branchEntity.getId()),
                           HttpMethod.GET,
