@@ -104,4 +104,9 @@ public class BranchControllerTest {
         assertEquals(HttpStatus.OK, re.getStatusCode());
         assertEquals(2, employeeMap.size());
     }
+
+    @Test
+    public void getCars() {
+
+    }
 }
