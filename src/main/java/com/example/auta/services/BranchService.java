@@ -33,8 +33,11 @@ public class BranchService {
     }
 
     public BranchEntity getOrCreateBranchEntity(Branch branch) {
-        Optional<BranchEntity> branchEntity = branchRepository.findBranchEntityByAddressEquals(branch.getAddress());
-        return branchEntity.orElse(branchRepository.saveAndFlush(map(branch)));
+        return Optional.ofNullable(branch)
+                .map(e-> branchRepository
+                        .findBranchEntityByAddressEquals(e.getAddress())
+                        .orElse(branchRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public Branch read(BranchEntity branch) {

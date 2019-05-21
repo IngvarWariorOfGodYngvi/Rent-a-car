@@ -28,10 +28,14 @@ public class CustomerService {
     }
 
     public CustomerEntity getOrCreateCustomerEntity(Customer customer) {
-        Optional<CustomerEntity> customerEntity = customerRepository
-                .findCustomerEntityByForenameEqualsAndSurnameEqualsAndEmailEquals(
-                        customer.getForename(), customer.getSurname(), customer.getEmail());
-        return customerEntity.orElse(customerRepository.saveAndFlush(map(customer)));
+        return Optional.ofNullable(customer)
+                .map(e -> customerRepository
+                        .findCustomerEntityByForenameEqualsAndSurnameEqualsAndEmailEquals(
+                                e.getForename(),
+                                e.getSurname(),
+                                e.getEmail())
+                        .orElse(customerRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public boolean removeCustomer(UUID id) {

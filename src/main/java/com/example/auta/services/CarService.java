@@ -122,9 +122,11 @@ public class CarService {
     }
 
     public CarEntity getOrCreateCarEntity(Car car) {
-        Optional<CarEntity> carEntity = carRepository
-                .findCarEntityByLicensePlateEquals(car.getLicensePlate());
-        return carEntity.orElse(carRepository.saveAndFlush(map(car)));
+        return Optional.ofNullable(car)
+                .map(e -> carRepository
+                        .findCarEntityByLicensePlateEquals(e.getLicensePlate())
+                        .orElse(carRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public Car readCar(CarEntity car){

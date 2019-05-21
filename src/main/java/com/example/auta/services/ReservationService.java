@@ -29,9 +29,11 @@ public class ReservationService {
         CustomerEntity customerEntity = customerRepository
                 .findById(customerUUID)
                 .orElseThrow(EntityNotFoundException::new);
-        Customer customer = customerService.readCustomer(customerEntity);
-        reservation.setCustomer(customer);
-        return reservationRepository.saveAndFlush(map(reservation)).getId();
+        ReservationEntity reservationEntity = map(reservation);
+        reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+        customerEntity.getReservations().add(reservationEntity);
+        customerRepository.save(customerEntity);
+        return reservationEntity.getId();
     }
 
     public boolean removeReservation(UUID reservationUUID) throws EntityNotFoundException {
