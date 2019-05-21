@@ -29,10 +29,6 @@ public class RentService {
     private final EmployeeService employeeService;
     private final ReservationService reservationService;
 
-    public Map<UUID, Rent> getRents() {
-        return null;
-    }
-
     public boolean updateRentComment(UUID rentUUID, String comment) {
         try {
             RentEntity rentEntity = rentRepository
