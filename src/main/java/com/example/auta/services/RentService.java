@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -32,13 +33,17 @@ public class RentService {
         return null;
     }
 
-    public boolean updateRentComment(UUID uuid, String comment) {
-
-        if (!rentRepository.findById(uuid).isPresent() || comment == null) {
-            throw new IllegalArgumentException("Wrong argument");
+    public boolean updateRentComment(UUID rentUUID, String comment) {
+        try {
+            RentEntity rentEntity = rentRepository
+                    .findById(rentUUID)
+                    .orElseThrow(IllegalArgumentException::new);
+            rentEntity.setComment(Optional.ofNullable(comment)
+                                          .orElseThrow(IllegalArgumentException::new));
+            rentRepository.save(rentEntity);
+        } catch (IllegalArgumentException ex) {
+            return false;
         }
-        RentEntity newEntity = rentRepository.findById(uuid).get();
-        newEntity.setComment(comment);
         return true;
     }
 
