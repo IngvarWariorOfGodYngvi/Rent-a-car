@@ -49,12 +49,14 @@ public class ReservationService {
 
 
     public ReservationEntity getOrCreateReservationEntity(Reservation reservation) {
-        Optional<ReservationEntity> reservationEntity = reservationRepository
-                .findReservationEntityByCustomerEqualsAndCarEqualsAndRentalStartDateEquals(customerService
-                        .getOrCreateCustomerEntity(reservation.getCustomer()), carService
-                        .getOrCreateCarEntity(reservation.getCar()), reservation
-                        .getRentalStartDate());
-        return reservationEntity.orElse(reservationRepository.saveAndFlush(map(reservation)));
+        return Optional.ofNullable(reservation).
+                map(e-> reservationRepository
+                        .findReservationEntityByCustomerEqualsAndCarEqualsAndRentalStartDateEquals(
+                                customerService.getOrCreateCustomerEntity(e.getCustomer()),
+                                carService.getOrCreateCarEntity(e.getCar()),
+                                e.getRentalStartDate())
+                        .orElse(reservationRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public Map<UUID, Reservation> getReservation(UUID customerUUID) throws EntityNotFoundException {

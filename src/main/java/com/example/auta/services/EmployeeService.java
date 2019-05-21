@@ -64,10 +64,12 @@ public class EmployeeService {
     }
 
     public EmployeeEntity getOrCreateEmployeeEntity(Employee employee) {
-        Optional<EmployeeEntity> employeeEntity = employeeRepository
-                .findEmployeeEntityByForenameEqualsAndSurnameEquals(employee.getForename(),
-                        employee.getSurname());
-        return employeeEntity.orElse(employeeRepository.saveAndFlush(map(employee)));
+        return Optional.ofNullable(employee)
+                .map(e-> employeeRepository
+                             .findEmployeeEntityByForenameEqualsAndSurnameEquals(e.getForename(),
+                                                                                 e.getSurname())
+                             .orElse(employeeRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public Employee readEmployee(EmployeeEntity employee) {
@@ -76,11 +78,12 @@ public class EmployeeService {
 
     private Employee map(EmployeeEntity source) {
 
-        return Employee.builder()
-                .forename(source.getForename())
-                .surname(source.getSurname())
-                .position(source.getPosition())
-                .build();
+        return Optional.ofNullable(source)
+                .map(e-> Employee.builder()
+                        .forename(e.getForename())
+                        .surname(e.getSurname())
+                        .position(e.getPosition())
+                        .build()).orElseGet(null);
     }
 
     private EmployeeEntity map(Employee source) {
