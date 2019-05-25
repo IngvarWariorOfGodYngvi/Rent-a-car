@@ -6,14 +6,13 @@
 image: openjdk:8
 
 pipelines:
-  default:
-    - step:
-        caches:
-          - gradle
-        script:
-          - bash ./gradlew clean testClasses
   branches:
     master:
+      - step:
+          caches:
+            - gradle
+          script:
+            - bash ./gradlew clean testClasses
       - step:
           name: Deploy to test
           deployment: test
