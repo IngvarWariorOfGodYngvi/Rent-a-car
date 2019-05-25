@@ -10,22 +10,22 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/Rent")
+@RequestMapping("/rent")
 public class RentController {
 
     @Autowired
     private RentService rentService;
 
-    @PostMapping ("/rentlist")
-    public Map<UUID, Rent> getRents() {return rentService.getRents();}
-
-    @PostMapping ("/updatecomment/{uuid}")
-    public boolean updateRentComment(@PathVariable UUID uuid, @RequestBody String comment){
-        return rentService.updateRentComment(uuid,comment);
+    @PostMapping ("/{rentUUID}/updatecomment")
+    public boolean updateRentComment(@PathVariable UUID rentUUID,
+                                     @RequestBody String comment){
+        return rentService.updateRentComment(rentUUID, comment);
     }
 
     @PostMapping("/add")
-    public UUID addRent(@RequestParam("reservationUUID") UUID reservationUUID,@RequestParam("employeeUUID") UUID employeeUUID,Rent rent){
+    public UUID addRent(@RequestParam("reservationUUID") UUID reservationUUID,
+                        @RequestParam("employeeUUID") UUID employeeUUID,
+                        Rent rent){
         return rentService.addRent(reservationUUID,employeeUUID,rent);
     }
 

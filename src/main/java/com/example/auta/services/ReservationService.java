@@ -29,9 +29,11 @@ public class ReservationService {
         CustomerEntity customerEntity = customerRepository
                 .findById(customerUUID)
                 .orElseThrow(EntityNotFoundException::new);
-        Customer customer = customerService.readCustomer(customerEntity);
-        reservation.setCustomer(customer);
-        return reservationRepository.saveAndFlush(map(reservation)).getId();
+        ReservationEntity reservationEntity = map(reservation);
+        reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+        customerEntity.getReservations().add(reservationEntity);
+        customerRepository.save(customerEntity);
+        return reservationEntity.getId();
     }
 
     public boolean removeReservation(UUID reservationUUID) throws EntityNotFoundException {
@@ -49,12 +51,14 @@ public class ReservationService {
 
 
     public ReservationEntity getOrCreateReservationEntity(Reservation reservation) {
-        Optional<ReservationEntity> reservationEntity = reservationRepository
-                .findReservationEntityByCustomerEqualsAndCarEqualsAndRentalStartDateEquals(customerService
-                        .getOrCreateCustomerEntity(reservation.getCustomer()), carService
-                        .getOrCreateCarEntity(reservation.getCar()), reservation
-                        .getRentalStartDate());
-        return reservationEntity.orElse(reservationRepository.saveAndFlush(map(reservation)));
+        return Optional.ofNullable(reservation).
+                map(e-> reservationRepository
+                        .findReservationEntityByCustomerEqualsAndCarEqualsAndRentalStartDateEquals(
+                                customerService.getOrCreateCustomerEntity(e.getCustomer()),
+                                carService.getOrCreateCarEntity(e.getCar()),
+                                e.getRentalStartDate())
+                        .orElse(reservationRepository.saveAndFlush(map(e))))
+                .orElse(null);
     }
 
     public Map<UUID, Reservation> getReservation(UUID customerUUID) throws EntityNotFoundException {

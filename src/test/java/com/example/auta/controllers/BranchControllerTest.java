@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -91,17 +92,34 @@ public class BranchControllerTest {
 
     @Test
     public void getEmployees() {
-        EmployeeEntity employee1 = EmployeeEntity.builder().surname("Kwiatkowski").branch(branchEntity).build();
-        EmployeeEntity employee2 = EmployeeEntity.builder().surname("Zielinski").branch(branchEntity).build();
-        Arrays.asList(employee1, employee2).forEach(employeeRepository::saveAndFlush);
-        String branchUUID = branchEntity.getId().toString();
+        List<EmployeeEntity> employeess = Arrays.asList(
+                EmployeeEntity.builder().surname("Kwiatkowski").branch(branchEntity).build(),
+                EmployeeEntity.builder().surname("Zielinski").branch(branchEntity).build());
+        employeess.forEach(employeeRepository::saveAndFlush);
         ResponseEntity<Map<UUID, Employee>> re = testRestTemplate
-                .exchange(String.format("/branch/%s/employees", branchUUID),
+                .exchange(String.format("/branch/%s/employees", branchEntity.getId()),
                           HttpMethod.GET,
                           null,
                           new ParameterizedTypeReference<Map<UUID, Employee>>(){});
         Map<UUID, Employee> employeeMap = re.getBody();
         assertEquals(HttpStatus.OK, re.getStatusCode());
         assertEquals(2, employeeMap.size());
+    }
+
+    @Test
+    public void getCars() {
+        List<CarEntity> cars = Arrays.asList(
+                CarEntity.builder().make("FIAT").build(),
+                CarEntity.builder().make("Suzuki").build());
+        branchEntity.getCars().addAll(cars);
+        branchEntity = branchRepository.saveAndFlush(branchEntity);
+        ResponseEntity<Map<UUID, Car>> re = testRestTemplate
+                .exchange(String.format("/branch/%s/cars", branchEntity.getId()),
+                          HttpMethod.GET,
+                          null,
+                          new ParameterizedTypeReference<Map<UUID, Car>>(){});
+        assertEquals(HttpStatus.OK, re.getStatusCode());
+        Map<UUID, Car> carMap = re.getBody();
+        assertEquals(2, carMap.size());
     }
 }
