@@ -9,28 +9,16 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/Return")
+@RequestMapping("/return")
 public class ReturnController {
 
     @Autowired
     private ReturnService returnService;
 
-    @PostMapping("/returnlist")
-    public Map<UUID, Return> getReturns() {
-        return returnService.getReturns();
-    }
-
-    @PostMapping("updateemployee/{uuid}/{empid}")
-    public boolean updateReturnEmployee(@PathVariable UUID uuid,UUID empid) {
-        return returnService.updateReturnEmployee(uuid,empid);
-    }
-
-    @PostMapping("updateextrapay/{uuid}")
-    public boolean updateReturnExtraPayment(@PathVariable UUID uuid, @RequestBody Integer extraPay){
-        return returnService.updateReturnExtraPayment(uuid,extraPay);
-    }
-    @GetMapping("/add")
-    public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID, @RequestParam("rentUUID")UUID rentUUID,Return returns){
-        return returnService.addReturn(employeeUUID,rentUUID,returns);
+    @PostMapping("/add")
+    public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID,
+                          @RequestParam("rentUUID") UUID rentUUID,
+                          @RequestBody Return ret){
+        return returnService.addReturn(employeeUUID, rentUUID, ret);
     }
 }

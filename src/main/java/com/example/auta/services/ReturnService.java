@@ -49,7 +49,7 @@ public class ReturnService {
         return true;
     }
 
-    public UUID addReturn(UUID employeeUUID, UUID rentUUID,Return returns) {
+    public UUID addReturn(UUID employeeUUID, UUID rentUUID, Return ret) {
         EmployeeEntity employeeEntity = employeeRepository
                 .findById(employeeUUID)
                 .orElseThrow(EntityNotFoundException::new);
@@ -60,9 +60,9 @@ public class ReturnService {
                 .employee(employeeEntity)
                 .reservation(rentEntity.getReservation())
                 .rentalEndDate(LocalDate.now())
-                .endMileage(returns.getEndMileage())
+                .endMileage(ret.getEndMileage())
                 .build();
-        rentEntity.getReservation().getCar().setMileage(returns.getEndMileage());
+        rentEntity.getReservation().getCar().setMileage(ret.getEndMileage());
         rentEntity.getReservation().setReservationStatus(ReservationStatus.RETURNED);
         return returnRepository.saveAndFlush(returnEntity).getId();
     }
