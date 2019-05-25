@@ -25,7 +25,7 @@ public class RentController {
     @PostMapping("/add")
     public UUID addRent(@RequestParam("reservationUUID") UUID reservationUUID,
                         @RequestParam("employeeUUID") UUID employeeUUID,
-                        Rent rent){
+                        @RequestBody Rent rent){
         return rentService.addRent(reservationUUID,employeeUUID,rent);
     }
 
