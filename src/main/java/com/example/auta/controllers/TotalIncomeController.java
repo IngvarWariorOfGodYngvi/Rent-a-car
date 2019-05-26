@@ -2,10 +2,7 @@ package com.example.auta.controllers;
 
 import com.example.auta.services.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -17,8 +14,12 @@ public class TotalIncomeController {
     @Autowired
     private IncomeService incomeService;
 
-    @GetMapping("/gettotalincome")
-    public BigDecimal totalIncome(@RequestParam("companyUUID") UUID companyUUID) throws Exception {
-        return incomeService.getTotalIncome(companyUUID);
+    @GetMapping("/company/{companyUUID}")
+    public BigDecimal companyIncome(@PathVariable("companyUUID") UUID companyUUID) throws Exception {
+        return incomeService.getCompanyIncome(companyUUID);
+    }
+    @GetMapping("/branch/{branchUUID}")
+    public BigDecimal branchIncome(@PathVariable("branchUUID")UUID branchUUID) throws Exception {
+        return incomeService.getBranchIncome(branchUUID);
     }
 }
