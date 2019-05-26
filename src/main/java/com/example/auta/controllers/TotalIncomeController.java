@@ -18,7 +18,7 @@ public class TotalIncomeController {
     private IncomeService incomeService;
 
     @GetMapping("/gettotalincome")
-    public BigDecimal totalIncome(@RequestParam("companyUUID") UUID companyUUID){
+    public BigDecimal totalIncome(@RequestParam("companyUUID") UUID companyUUID) throws Exception {
         return incomeService.getTotalIncome(companyUUID);
     }
 }
