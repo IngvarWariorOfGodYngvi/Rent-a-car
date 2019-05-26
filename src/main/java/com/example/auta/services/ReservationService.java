@@ -11,7 +11,10 @@ import com.example.auta.models.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -29,6 +32,14 @@ public class ReservationService {
         CustomerEntity customerEntity = customerRepository
                 .findById(customerUUID)
                 .orElseThrow(EntityNotFoundException::new);
+
+        reservation.setTotalPrice
+                (new BigDecimal(1 + DAYS.between(reservation.getRentalStartDate(),
+                        reservation.getRentalEndDate()))
+                        .multiply(reservation.getCar().getDailyPrice()));
+        if (!reservation.getRentalBranch().equals(reservation.getReturnBranch())) {
+            reservation.setTotalPrice(reservation.getTotalPrice().add(new BigDecimal(50)));
+        }
         ReservationEntity reservationEntity = map(reservation);
         reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
         customerEntity.getReservations().add(reservationEntity);
@@ -52,7 +63,7 @@ public class ReservationService {
 
     public ReservationEntity getOrCreateReservationEntity(Reservation reservation) {
         return Optional.ofNullable(reservation).
-                map(e-> reservationRepository
+                map(e -> reservationRepository
                         .findReservationEntityByCustomerEqualsAndCarEqualsAndRentalStartDateEquals(
                                 customerService.getOrCreateCustomerEntity(e.getCustomer()),
                                 carService.getOrCreateCarEntity(e.getCar()),
@@ -136,6 +147,11 @@ public class ReservationService {
             ReservationEntity reservationEntity = reservationRepository
                     .findById(reservationUUID)
                     .orElseThrow(EntityNotFoundException::new);
+            if (DAYS.between(LocalDate.now(), reservationEntity.getRentalStartDate()) < 2) {
+                reservationEntity.setTotalPrice(reservationEntity.getTotalPrice().multiply(new BigDecimal(0.2)));
+            } else {
+                reservationEntity.setTotalPrice(new BigDecimal(0));
+            }
             reservationEntity.setReservationStatus(ReservationStatus.CANCELED);
             reservationRepository.saveAndFlush(reservationEntity);
             return true;

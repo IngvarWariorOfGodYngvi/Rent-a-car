@@ -18,7 +18,8 @@ public class ReturnController {
     @PostMapping("/add")
     public UUID addReturn(@RequestParam("employeeUUID") UUID employeeUUID,
                           @RequestParam("rentUUID") UUID rentUUID,
-                          @RequestBody Return ret){
-        return returnService.addReturn(employeeUUID, rentUUID, ret);
+                          @RequestBody Return ret,
+                          @RequestParam("branchUUID")UUID branchUUID){
+        return returnService.addReturn(employeeUUID, rentUUID, ret,branchUUID);
     }
 }
