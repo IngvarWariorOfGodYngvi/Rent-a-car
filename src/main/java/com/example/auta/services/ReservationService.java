@@ -34,10 +34,10 @@ public class ReservationService {
                 .orElseThrow(EntityNotFoundException::new);
 
         reservation.setTotalPrice
-                (new BigDecimal(DAYS.between(reservation.getRentalStartDate(),
+                (new BigDecimal(1 + DAYS.between(reservation.getRentalStartDate(),
                         reservation.getRentalEndDate()))
                         .multiply(reservation.getCar().getDailyPrice()));
-        if(!reservation.getRentalBranch().equals(reservation.getReturnBranch())){
+        if (!reservation.getRentalBranch().equals(reservation.getReturnBranch())) {
             reservation.setTotalPrice(reservation.getTotalPrice().add(new BigDecimal(50)));
         }
         ReservationEntity reservationEntity = map(reservation);
@@ -147,6 +147,11 @@ public class ReservationService {
             ReservationEntity reservationEntity = reservationRepository
                     .findById(reservationUUID)
                     .orElseThrow(EntityNotFoundException::new);
+            if (DAYS.between(LocalDate.now(), reservationEntity.getRentalStartDate()) < 2) {
+                reservationEntity.setTotalPrice(reservationEntity.getTotalPrice().multiply(new BigDecimal(0.2)));
+            } else {
+                reservationEntity.setTotalPrice(new BigDecimal(0));
+            }
             reservationEntity.setReservationStatus(ReservationStatus.CANCELED);
             reservationRepository.saveAndFlush(reservationEntity);
             return true;
