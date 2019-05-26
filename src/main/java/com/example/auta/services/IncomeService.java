@@ -1,8 +1,10 @@
 package com.example.auta.services;
 
+import com.example.auta.domain.entities.BranchEntity;
 import com.example.auta.domain.entities.CompanyEntity;
 import com.example.auta.domain.entities.ReservationEntity;
 import com.example.auta.domain.entities.ReturnEntity;
+import com.example.auta.domain.repositories.BranchRepository;
 import com.example.auta.domain.repositories.CompanyRepository;
 import com.example.auta.domain.repositories.ReservationRepository;
 import com.example.auta.domain.repositories.ReturnRepository;
@@ -26,9 +28,10 @@ public class IncomeService {
     private final CompanyRepository companyRepository;
     private final ReservationRepository reservationRepository;
     private final ReturnRepository returnRepository;
+    private final BranchRepository branchRepository;
 
 
-    public BigDecimal getTotalIncome(UUID companyUUID) throws Exception {
+    public BigDecimal getCompanyIncome(UUID companyUUID) throws Exception {
         CompanyEntity companyEntity = companyRepository
                 .findById(companyUUID)
                 .orElseThrow(EntityNotFoundException::new);
@@ -36,6 +39,23 @@ public class IncomeService {
                 .findReservationEntityByRentalBranch_Company(companyEntity);
         Set<ReturnEntity> returnEntitySet = returnRepository
                 .findReturnEntitiesByReservation_RentalBranch_Company(companyEntity);
+
+        return calculateIncome(reservationEntitySet, returnEntitySet);
+    }
+
+    public BigDecimal getBranchIncome(UUID branchUUID) throws Exception {
+        BranchEntity branchEntity = branchRepository
+                .findById(branchUUID)
+                .orElseThrow(Exception::new);
+        Set<ReservationEntity> reservationEntitySet = reservationRepository
+                .findReservationEntityByRentalBranch(branchEntity);
+        Set<ReturnEntity> returnEntitySet = returnRepository
+                .findReturnEntitiesByReservation_RentalBranch(branchEntity);
+
+        return calculateIncome(reservationEntitySet, returnEntitySet);
+    }
+
+    private BigDecimal calculateIncome(Set<ReservationEntity> reservationEntitySet, Set<ReturnEntity> returnEntitySet) throws Exception {
         BigDecimal incomeFromReservation = reservationEntitySet
                 .stream()
                 .map(e -> e.getTotalPrice())
@@ -46,7 +66,6 @@ public class IncomeService {
                 .map(e -> e.getExtraPayment())
                 .reduce(BigDecimal::add)
                 .orElseThrow(Exception::new);
-
         return incomeFromReservation.add(incomeFromReturn);
     }
 }
